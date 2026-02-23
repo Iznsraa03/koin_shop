@@ -5,13 +5,15 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "export": "next build",
+    "start": "node server.js",
     "lint": "eslint"
   },
   "dependencies": {
     "@gsap/react": "^2.1.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "express": "^4.19.2",
     "gsap": "^3.12.7",
     "lucide-react": "^0.575.0",
     "next": "16.1.6",
