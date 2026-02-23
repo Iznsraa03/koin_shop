@@ -59,6 +59,17 @@ const HeroSection = ({ slides, activeSlide, onSlideChange }: HeroSectionProps) =
         <p className="js-hero-reveal text-base text-white/70 sm:text-lg">
           Koin Shop adalah solusi terbaik untuk top up item game favoritmu. Proses instan, harga bersahabat, dan pembayaran lengkap dalam satu platform.
         </p>
+        <div className="js-hero-reveal flex flex-wrap justify-center gap-4 pt-4">
+          <a
+            href="https://royalurban.net"
+            className="inline-flex items-center justify-center rounded-full border border-[#F6C90E] bg-[#F6C90E] px-7 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-[#303841] shadow-[0_0_30px_rgba(246,201,14,0.25)] transition hover:-translate-y-0.5 hover:shadow-[0_0_45px_rgba(37,99,235,0.35)]"
+            aria-label="Order Sekarang"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Order Sekarang
+          </a>
+        </div>
       </div>
     </section>
   );

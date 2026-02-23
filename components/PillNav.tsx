@@ -22,8 +22,6 @@ export interface PillNavProps {
   pillColor?: string;
   hoveredPillTextColor?: string;
   pillTextColor?: string;
-  scrollDurationMs?: number;
-  scrollDelayMs?: number;
   onMobileMenuClick?: () => void;
   initialLoadAnimation?: boolean;
 }
@@ -40,8 +38,6 @@ const PillNav: React.FC<PillNavProps> = ({
   pillColor = "#060010",
   hoveredPillTextColor = "#060010",
   pillTextColor,
-  scrollDurationMs = 850,
-  scrollDelayMs = 120,
   onMobileMenuClick,
   initialLoadAnimation = true,
 }) => {
@@ -56,8 +52,6 @@ const PillNav: React.FC<PillNavProps> = ({
   const mobileMenuRef = useRef<HTMLDivElement | null>(null);
   const navItemsRef = useRef<HTMLDivElement | null>(null);
   const logoRef = useRef<HTMLAnchorElement | HTMLElement | null>(null);
-  const scrollAnimationRef = useRef<number | null>(null);
-
   useEffect(() => {
     const layout = () => {
       circleRefs.current.forEach((circle) => {
@@ -250,48 +244,7 @@ const PillNav: React.FC<PillNavProps> = ({
     if (!target) return;
 
     event.preventDefault();
-
-    const targetTop = target.getBoundingClientRect().top + window.scrollY;
-    const startTop = window.scrollY;
-    const distance = targetTop - startTop;
-    const distanceAbs = Math.abs(distance);
-    const baseDuration = Math.max(scrollDurationMs, 0);
-    const duration = Math.min(baseDuration + distanceAbs * 0.35, baseDuration * 2.2);
-    const delay = Math.max(scrollDelayMs, 0);
-    const overshootBase = Math.min(Math.max(distance * 0.04, 12), 42);
-    const overshoot = distanceAbs < 220 ? 0 : overshootBase;
-
-    if (scrollAnimationRef.current) {
-      cancelAnimationFrame(scrollAnimationRef.current);
-    }
-
-    const easeOutBack = (t: number) => {
-      const c1 = 1.70158;
-      const c3 = c1 + 1;
-      return 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2);
-    };
-
-    const startTime = performance.now() + delay;
-
-    const step = (now: number) => {
-      if (now < startTime) {
-        scrollAnimationRef.current = requestAnimationFrame(step);
-        return;
-      }
-      const elapsed = now - startTime;
-      const progress = Math.min(elapsed / Math.max(duration, 1), 1);
-      const back = easeOutBack(progress);
-      const motion = distance + (distance >= 0 ? overshoot : -overshoot);
-      const nextTop = startTop + motion * back;
-      window.scrollTo({ top: progress === 1 ? targetTop : nextTop, behavior: "auto" });
-      if (progress < 1) {
-        scrollAnimationRef.current = requestAnimationFrame(step);
-      } else {
-        scrollAnimationRef.current = null;
-      }
-    };
-
-    scrollAnimationRef.current = requestAnimationFrame(step);
+    target.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   const cssVars = {

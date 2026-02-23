@@ -29,17 +29,6 @@ const FeaturesSection = () => {
           <p className="mx-auto mt-4 max-w-2xl text-sm uppercase tracking-[0.2em] text-white/60 sm:text-base">
             Beli item favorit tanpa ribet. Proses instan, pembayaran lengkap, dan dukungan 24/7.
           </p>
-          <div className="js-scale-in mt-10 flex justify-center">
-            <a
-              href="https://royalurban.net"
-              className="inline-flex items-center justify-center rounded-full border border-[#F6C90E] bg-[#F6C90E] px-6 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-[#303841] shadow-[0_0_30px_rgba(246,201,14,0.25)] transition hover:-translate-y-0.5 hover:shadow-[0_0_45px_rgba(37,99,235,0.35)]"
-              aria-label="Order Sekarang"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Order Sekarang
-            </a>
-          </div>
         </div>
         <div className="grid gap-6 md:grid-cols-3">
           {features.map((feature, index) => (

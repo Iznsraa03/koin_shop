@@ -174,8 +174,6 @@ export default function Home() {
           pillColor="#F6C90E"
           hoveredPillTextColor="#ffffff"
           pillTextColor="#303841"
-          scrollDurationMs={1200}
-          scrollDelayMs={160}
           initialLoadAnimation={false}
         />
 
