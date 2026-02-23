@@ -1,0 +1,76 @@
+# 🧩 Reactbits Component Installation Guide (Next.js Latest)
+
+## 📌 Overview
+Setup installation Reactbits component menggunakan shadcn CLI + GSAP pada Next.js (App Router).
+
+---
+
+## 🎨 Design Standard (Mandatory)
+
+- Background: #303841
+- Primary Component: #F6C90E
+- Accent: Blue Shades
+- Style: Minimalist, High-Contrast, Sharp Borders
+- Framework: Tailwind CSS
+- Animation Engine: GSAP
+
+---
+
+# 1️⃣ Install GSAP (Required)
+
+npm install gsap
+
+atau
+
+yarn add gsap
+
+---
+
+# 2️⃣ Install Reactbits Component (via shadcn CLI)
+
+Example: Install SplitText (TypeScript + Tailwind)
+
+npx shadcn@latest add @react-bits/SplitText-TS-TW
+
+Command ini akan:
+- Menambahkan component ke folder /components
+- Inject Tailwind style yang diperlukan
+- Support TypeScript
+
+---
+
+# 3️⃣ Usage Example (Client Component Only)
+
+"use client"
+
+import SplitText from "@/components/SplitText"
+
+export default function Hero() {
+  return (
+    <section className="min-h-screen flex items-center justify-center bg-[#303841]">
+      <SplitText
+        text="Reactbits Animation"
+        className="text-4xl font-bold text-[#F6C90E]"
+      />
+    </section>
+  )
+}
+
+---
+
+# 4️⃣ Mandatory Rules
+
+- Wajib gunakan "use client"
+- Jangan gunakan GSAP di Server Component
+- Scope animation per component
+- Gunakan Tailwind only
+- Ikuti standar warna:
+  - Background: #303841
+  - Primary: #F6C90E
+  - Accent: Blue
+
+---
+
+# ✅ Setup Complete
+
+Reactbits component siap digunakan pada Next.js App Router.
