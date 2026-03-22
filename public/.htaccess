@@ -1,0 +1,36 @@
+# Ensure correct MIME types for Next.js exported assets
+# Fixes cases where .js is served with a wrong handler/MIME (can cause 415 Unsupported Media Type)
+
+<IfModule mod_mime.c>
+  # If your server has a misconfigured handler for .js, remove it.
+  <IfModule mod_negotiation.c>
+    Options -MultiViews
+  </IfModule>
+
+  RemoveHandler .js .mjs
+  RemoveType .js .mjs
+
+  AddType application/javascript .js
+  AddType application/javascript .mjs
+  AddType text/css .css
+  AddType application/json .json
+  AddType application/wasm .wasm
+  AddType image/svg+xml .svg
+  AddType font/woff2 .woff2
+  AddType font/woff .woff
+  AddType application/vnd.ms-fontobject .eot
+  AddType font/ttf .ttf
+  AddType font/otf .otf
+</IfModule>
+
+# Optional: cache static assets
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType application/javascript "access plus 30 days"
+  ExpiresByType text/css "access plus 30 days"
+  ExpiresByType image/svg+xml "access plus 30 days"
+  ExpiresByType image/png "access plus 30 days"
+  ExpiresByType image/jpeg "access plus 30 days"
+  ExpiresByType image/webp "access plus 30 days"
+  ExpiresByType font/woff2 "access plus 365 days"
+</IfModule>

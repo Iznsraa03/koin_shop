@@ -20,6 +20,8 @@ Panduan ini menyiapkan project agar bisa di-upload ke cPanel sebagai aplikasi No
    - `package.json`
    - `package-lock.json`
    - Folder `out/` (beserta isinya)
+
+> Penting (static upload ke `public_html`): jika kamu meng-upload isi `out/` langsung ke `public_html`, pastikan file `.htaccess` ikut ada di `public_html/.htaccess` untuk memperbaiki MIME type asset seperti `/_next/static/*.js`.
 3. Pastikan struktur di server:
    ```
    coin_shop/

@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { gsap } from "gsap";
+import { Menu, X } from "lucide-react";
 
 export type PillNavItem = {
   label: string;
@@ -139,7 +140,9 @@ const PillNav: React.FC<PillNavProps> = ({
       }
     }
 
-    return () => window.removeEventListener("resize", onResize);
+    return () => {
+      window.removeEventListener("resize", onResize);
+    };
   }, [items, ease, initialLoadAnimation]);
 
   const handleEnter = (i: number) => {
@@ -177,54 +180,58 @@ const PillNav: React.FC<PillNavProps> = ({
     });
   };
 
-  const toggleMobileMenu = () => {
-    const newState = !isMobileMenuOpen;
-    setIsMobileMenuOpen(newState);
-
-    const hamburger = hamburgerRef.current;
+  useEffect(() => {
     const menu = mobileMenuRef.current;
+    if (!menu) return;
 
-    if (hamburger) {
-      const lines = hamburger.querySelectorAll(".hamburger-line");
-      if (newState) {
-        gsap.to(lines[0], { rotation: 45, y: 3, duration: 0.3, ease });
-        gsap.to(lines[1], { rotation: -45, y: -3, duration: 0.3, ease });
-      } else {
-        gsap.to(lines[0], { rotation: 0, y: 0, duration: 0.3, ease });
-        gsap.to(lines[1], { rotation: 0, y: 0, duration: 0.3, ease });
-      }
+    gsap.killTweensOf(menu);
+
+    if (isMobileMenuOpen) {
+      gsap.set(menu, { visibility: "visible", pointerEvents: "auto" });
+      gsap.fromTo(
+        menu,
+        { opacity: 0, y: 10 },
+        { opacity: 1, y: 0, duration: 0.22, ease }
+      );
+    } else {
+      gsap.to(menu, {
+        opacity: 0,
+        y: 10,
+        duration: 0.18,
+        ease,
+        onComplete: () => {
+          gsap.set(menu, { visibility: "hidden", pointerEvents: "none" });
+        },
+      });
     }
+  }, [isMobileMenuOpen, ease]);
 
-    if (menu) {
-      if (newState) {
-        gsap.set(menu, { visibility: "visible" });
-        gsap.fromTo(
-          menu,
-          { opacity: 0, y: 10, scaleY: 1 },
-          {
-            opacity: 1,
-            y: 0,
-            scaleY: 1,
-            duration: 0.3,
-            ease,
-            transformOrigin: "top center",
-          }
-        );
-      } else {
-        gsap.to(menu, {
-          opacity: 0,
-          y: 10,
-          scaleY: 1,
-          duration: 0.2,
-          ease,
-          transformOrigin: "top center",
-          onComplete: () => {
-            gsap.set(menu, { visibility: "hidden" });
-          },
-        });
-      }
-    }
+  useEffect(() => {
+    const onDocKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setIsMobileMenuOpen(false);
+    };
 
+    const onDocPointerDown = (event: PointerEvent) => {
+      if (!isMobileMenuOpen) return;
+      const menu = mobileMenuRef.current;
+      const btn = hamburgerRef.current;
+      const target = event.target as Node | null;
+      if (!menu || !btn || !target) return;
+      if (menu.contains(target) || btn.contains(target)) return;
+      setIsMobileMenuOpen(false);
+    };
+
+    document.addEventListener("keydown", onDocKeyDown);
+    document.addEventListener("pointerdown", onDocPointerDown);
+
+    return () => {
+      document.removeEventListener("keydown", onDocKeyDown);
+      document.removeEventListener("pointerdown", onDocPointerDown);
+    };
+  }, [isMobileMenuOpen]);
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen((prev) => !prev);
     onMobileMenuClick?.();
   };
 
@@ -312,9 +319,10 @@ const PillNav: React.FC<PillNavProps> = ({
           </a>
         )}
 
+        {/* Desktop pills */}
         <div
           ref={navItemsRef}
-          className="relative ml-2 flex items-center rounded-full"
+          className="relative ml-2 hidden items-center rounded-full md:flex"
           style={{
             height: "var(--nav-h)",
             background: "var(--base, #000)",
@@ -416,6 +424,87 @@ const PillNav: React.FC<PillNavProps> = ({
               );
             })}
           </ul>
+        </div>
+
+        {/* Mobile hamburger */}
+        <div className="relative ml-2 md:hidden">
+          <button
+            ref={hamburgerRef}
+            type="button"
+            aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={isMobileMenuOpen}
+            aria-controls="mobile-menu"
+            onClick={toggleMobileMenu}
+            className="inline-flex h-[var(--nav-h)] w-[var(--nav-h)] items-center justify-center rounded-full border border-white/10 bg-[#0f172b]/90 text-[#F6C90E] backdrop-blur transition-colors hover:bg-[#111c33]"
+          >
+            {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
+
+          <div
+            id="mobile-menu"
+            ref={mobileMenuRef}
+            className="invisible absolute right-0 z-[1200] mt-3 w-[min(78vw,320px)] origin-top rounded-2xl border border-white/10 bg-[#0f172b]/92 p-2 opacity-0 shadow-[0_20px_60px_rgba(0,0,0,0.6)] backdrop-blur pointer-events-none"
+            role="menu"
+            aria-label="Mobile menu"
+          >
+            <ul className="flex flex-col gap-2">
+              {items.map((item) => {
+                const isActive = activeHref === item.href;
+
+                const itemClasses =
+                  "flex items-center justify-between rounded-xl border border-white/10 bg-[#111c33]/70 px-4 py-3 text-sm font-semibold uppercase tracking-[0.3px] text-white transition-colors hover:bg-[#111c33]";
+
+                return (
+                  <li key={item.href}>
+                    {isRouterLink(item.href) ? (
+                      <Link
+                        href={item.href}
+                        role="menuitem"
+                        aria-label={item.ariaLabel || item.label}
+                        className={itemClasses}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                      >
+                        <span className="flex items-center gap-3">
+                          <span className="h-2 w-2 rounded-full bg-[#F6C90E]" />
+                          {item.label}
+                        </span>
+                        {isActive ? (
+                          <span className="rounded-full bg-[#F6C90E] px-2 py-1 text-[10px] font-black text-[#0f172b]">
+                            ACTIVE
+                          </span>
+                        ) : null}
+                      </Link>
+                    ) : (
+                      <a
+                        href={item.href}
+                        role="menuitem"
+                        aria-label={item.ariaLabel || item.label}
+                        className={itemClasses}
+                        onClick={(event) => {
+                          scrollToAnchor(event, item.href);
+                          setIsMobileMenuOpen(false);
+                        }}
+                      >
+                        <span className="flex items-center gap-3">
+                          <span className="h-2 w-2 rounded-full bg-[#F6C90E]" />
+                          {item.label}
+                        </span>
+                        {isActive ? (
+                          <span className="rounded-full bg-[#F6C90E] px-2 py-1 text-[10px] font-black text-[#0f172b]">
+                            ACTIVE
+                          </span>
+                        ) : null}
+                      </a>
+                    )}
+                  </li>
+                );
+              })}
+            </ul>
+
+            <div className="mt-2 rounded-xl border border-[#2563eb]/30 bg-[#2563eb]/10 px-4 py-3 text-xs text-white/80">
+              <span className="font-semibold text-white">Tip:</span> Tap menu untuk pindah section.
+            </div>
+          </div>
         </div>
 
       </nav>
