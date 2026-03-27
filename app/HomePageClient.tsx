@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import PillNav from "../components/PillNav";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -24,6 +24,7 @@ const navItems = [
   { label: "Contact", href: "#contact" },
 ] as const;
 
+// Daftarkan GSAP plugin sekali di module level — aman karena GSAP idempotent
 gsap.registerPlugin(ScrollTrigger);
 
 interface HomePageClientProps {
@@ -41,6 +42,12 @@ export default function HomePageClient({ slides }: HomePageClientProps) {
     "#contact": 0,
   });
 
+  // Ref untuk throttle RAF agar scroll listener tidak berlebihan
+  const rafScrollRef = useRef<number | null>(null);
+  // Ref untuk debounce resize
+  const resizeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Auto-rotate hero slides
   useEffect(() => {
     if (heroSlides.length <= 1) return;
     const timer = setInterval(() => {
@@ -49,6 +56,7 @@ export default function HomePageClient({ slides }: HomePageClientProps) {
     return () => clearInterval(timer);
   }, [heroSlides.length]);
 
+  // Scroll progress tracker — throttled via requestAnimationFrame
   useEffect(() => {
     const sections = navItems
       .map((item) => ({
@@ -62,24 +70,17 @@ export default function HomePageClient({ slides }: HomePageClientProps) {
 
     if (!sections.length) return;
 
-    const updateScrollProgress = () => {
+    const computeProgress = () => {
       const viewportMid = window.scrollY + window.innerHeight * 0.35;
 
       const current = sections
         .map((section) => {
-          const rect = section.element.getBoundingClientRect();
-          const top = rect.top + window.scrollY;
-          const bottom = top + rect.height;
+          const top = section.element.offsetTop;
+          const bottom = top + section.element.offsetHeight;
           const within = viewportMid >= top && viewportMid < bottom;
-
-          const rawProgress = (viewportMid - top) / rect.height;
+          const rawProgress = (viewportMid - top) / section.element.offsetHeight;
           const progress = Math.min(1, Math.max(0, rawProgress));
-
-          return {
-            href: section.href,
-            within,
-            progress,
-          };
+          return { href: section.href, within, progress };
         })
         .find((entry) => entry.within);
 
@@ -88,37 +89,55 @@ export default function HomePageClient({ slides }: HomePageClientProps) {
       setProgressByHref((prev) => {
         const next: Record<string, number> = { ...prev };
         for (const section of sections) {
-          const currentSection = current?.href === section.href;
-          const stored = currentSection ? current?.progress ?? 0 : prev[section.href] ?? 0;
-          next[section.href] = currentSection ? stored : prev[section.href] ?? 0;
+          if (current?.href === section.href) {
+            next[section.href] = current.progress;
+          }
         }
         return next;
       });
+
+      rafScrollRef.current = null;
     };
 
-    updateScrollProgress();
+    // Throttle: hanya 1 frame per scroll event
+    const updateScrollProgress = () => {
+      if (rafScrollRef.current !== null) return;
+      rafScrollRef.current = requestAnimationFrame(computeProgress);
+    };
+
+    // Debounce resize: hanya eksekusi setelah resize berhenti 150ms
+    const updateOnResize = () => {
+      if (resizeTimerRef.current) clearTimeout(resizeTimerRef.current);
+      resizeTimerRef.current = setTimeout(computeProgress, 150);
+    };
+
+    computeProgress(); // initial call
     window.addEventListener("scroll", updateScrollProgress, { passive: true });
-    window.addEventListener("resize", updateScrollProgress);
+    window.addEventListener("resize", updateOnResize, { passive: true });
 
     return () => {
       window.removeEventListener("scroll", updateScrollProgress);
-      window.removeEventListener("resize", updateScrollProgress);
+      window.removeEventListener("resize", updateOnResize);
+      if (rafScrollRef.current) cancelAnimationFrame(rafScrollRef.current);
+      if (resizeTimerRef.current) clearTimeout(resizeTimerRef.current);
     };
   }, []);
 
+  // GSAP scroll animations
   useEffect(() => {
     const ctx = gsap.context(() => {
       const heroTargets = gsap.utils.toArray<HTMLElement>(".js-hero-reveal");
       if (heroTargets.length) {
         gsap.fromTo(
           heroTargets,
-          { opacity: 0, y: 40 },
+          { opacity: 0, y: 30 },
           {
             opacity: 1,
             y: 0,
-            duration: 0.9,
+            duration: 0.8,
             ease: "power3.out",
-            stagger: 0.15,
+            stagger: 0.12,
+            force3D: true,
           }
         );
       }
@@ -128,16 +147,17 @@ export default function HomePageClient({ slides }: HomePageClientProps) {
         if (fadeTargets.length) {
           gsap.fromTo(
             fadeTargets,
-            { opacity: 0, y: 30 },
+            { opacity: 0, y: 24 },
             {
               opacity: 1,
               y: 0,
-              duration: 0.8,
+              duration: 0.7,
               ease: "power3.out",
-              stagger: 0.12,
+              stagger: 0.1,
+              force3D: true,
               scrollTrigger: {
                 trigger: section,
-                start: "top 70%",
+                start: "top 72%",
                 once: true,
               },
             }
@@ -148,16 +168,17 @@ export default function HomePageClient({ slides }: HomePageClientProps) {
         if (scaleTargets.length) {
           gsap.fromTo(
             scaleTargets,
-            { opacity: 0, scale: 0.92 },
+            { opacity: 0, scale: 0.94 },
             {
               opacity: 1,
               scale: 1,
-              duration: 0.85,
+              duration: 0.7,
               ease: "power2.out",
-              stagger: 0.12,
+              stagger: 0.1,
+              force3D: true,
               scrollTrigger: {
                 trigger: section,
-                start: "top 70%",
+                start: "top 72%",
                 once: true,
               },
             }
@@ -172,10 +193,7 @@ export default function HomePageClient({ slides }: HomePageClientProps) {
   return (
     <div className="min-h-screen bg-base-color text-white">
       <div className="relative overflow-hidden">
-        <div className="pointer-events-none absolute inset-0">
-          <div className="absolute -left-24 -top-24 h-72 w-72 rounded-full bg-[#1b4fa8]/30 blur-[140px]" />
-          <div className="absolute -right-20 top-1/2 h-80 w-80 -translate-y-1/2 rounded-full bg-[#2563eb]/20 blur-[160px]" />
-        </div>
+
 
         <PillNav
           logo="/logo.png"

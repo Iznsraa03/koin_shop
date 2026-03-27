@@ -42,6 +42,15 @@ export const metadata: Metadata = {
     "agen royal dream"
   ],
   authors: [{ name: "Koin Shop" }],
+  icons: {
+    icon: [
+      { url: '/favicon.ico' },
+      { url: '/logo.png', type: 'image/png' },
+    ],
+    apple: [
+      { url: '/logo.png' }
+    ]
+  },
   creator: "Koin Shop",
   publisher: "Koin Shop",
   robots: {

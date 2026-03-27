@@ -39,10 +39,10 @@ const FeaturesSection = () => {
           {features.map((feature, index) => (
             <AnimatedContent
               key={feature.title}
-              distance={100}
+              distance={40}
               direction="vertical"
               reverse={false}
-              duration={0.8}
+              duration={0.65}
               ease="power3.out"
               initialOpacity={0}
               animateOpacity

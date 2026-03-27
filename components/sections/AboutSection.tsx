@@ -1,10 +1,30 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { ChevronDown } from "lucide-react";
 import AnimatedContent from "../AnimatedContent";
 
-type ModalKey = "privasi" | "syarat" | "refund" | null;
+type ModalKey = "privasi" | "syarat" | "refund" | "faq" | null;
+
+const faqsData = [
+  {
+    q: "Apakah top up Royal Dream di Koin Shop aman?",
+    a: "Ya, semua transaksi diproses dengan sistem aman dan langsung ke akun game kamu.",
+  },
+  {
+    q: "Berapa lama proses top up?",
+    a: "Proses hanya beberapa detik setelah pembayaran berhasil.",
+  },
+  {
+    q: "Metode pembayaran apa saja yang tersedia?",
+    a: "Kami mendukung e-wallet, transfer bank, dan QRIS.",
+  },
+  {
+    q: "Apakah tersedia layanan 24 jam?",
+    a: "Ya, layanan Koin Shop aktif 24/7.",
+  },
+];
 
 const modalContent: Record<Exclude<ModalKey, null>, { title: string; body: React.ReactNode }> = {
   privasi: {
@@ -96,6 +116,19 @@ const modalContent: Record<Exclude<ModalKey, null>, { title: string; body: React
       </div>
     ),
   },
+  faq: {
+    title: "FAQ Top Up Royal Dream",
+    body: (
+      <div className="space-y-4 text-sm text-white/70 leading-relaxed">
+        {faqsData.map((item, i) => (
+          <div key={i} className="border-b border-white/10 pb-3 last:border-0 last:pb-0">
+            <p className="font-semibold text-white mb-1">Q: {item.q}</p>
+            <p>A: {item.a}</p>
+          </div>
+        ))}
+      </div>
+    ),
+  },
 };
 
 const AboutSection = () => {
@@ -145,37 +178,44 @@ const AboutSection = () => {
                 <span className="absolute inset-0 -translate-x-full bg-[#F6C90E] transition-transform duration-300 ease-out group-hover:translate-x-0 rounded-full z-0" />
                 <span className="relative z-10">Kebijakan Refund</span>
               </button>
+              <button
+                onClick={() => open("faq")}
+                className="group relative overflow-hidden rounded-full border border-[#F6C90E]/50 bg-transparent px-6 py-3 text-sm font-semibold text-[#F6C90E] tracking-wide transition-all duration-300 hover:border-[#F6C90E] hover:text-[#0f172b] hover:shadow-[0_0_20px_rgba(246,201,14,0.35)] active:scale-95"
+              >
+                <span className="absolute inset-0 -translate-x-full bg-[#F6C90E] transition-transform duration-300 ease-out group-hover:translate-x-0 rounded-full z-0" />
+                <span className="relative z-10">FAQ</span>
+              </button>
             </div>
           </div>
-          <AnimatedContent
-            distance={100}
-            direction="vertical"
-            reverse={false}
-            duration={0.8}
-            ease="power3.out"
-            initialOpacity={0}
-            animateOpacity
-            scale={1}
-            threshold={0.1}
-            delay={0}
-            className="flex items-center justify-center"
-          >
-            <img
-              src="/logo.png"
-              alt="Koin Shop"
-              className="rovo-float-logo h-40 w-40 object-contain"
-            />
-          </AnimatedContent>
+            <AnimatedContent
+              distance={40}
+              direction="vertical"
+              reverse={false}
+              duration={0.7}
+              ease="power3.out"
+              initialOpacity={0}
+              animateOpacity
+              scale={1}
+              threshold={0.1}
+              delay={0}
+              className="flex items-center justify-center"
+            >
+              <Image
+                src="/logo.png"
+                alt="Koin Shop"
+                width={160}
+                height={160}
+                className="rovo-float-logo object-contain"
+                loading="lazy"
+              />
+            </AnimatedContent>
         </div>
       </section>
-
-      {/* FAQ Section */}
-      <FaqSection />
 
       {/* Modal */}
       {activeModal && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm px-4"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 px-4"
           onClick={close}
         >
           <div
@@ -185,7 +225,7 @@ const AboutSection = () => {
             {/* Header */}
             <div className="mb-5 flex items-center justify-between border-b border-white/10 pb-4">
               <h3 className="text-base font-semibold text-[#F6C90E] uppercase tracking-wide">
-                {modalContent[activeModal].title}
+                {modalContent[activeModal as Exclude<ModalKey, null>].title}
               </h3>
               <button
                 onClick={close}
@@ -197,7 +237,7 @@ const AboutSection = () => {
             </div>
             {/* Body */}
             <div className="max-h-[60vh] overflow-y-auto pr-1">
-              {modalContent[activeModal].body}
+              {modalContent[activeModal as Exclude<ModalKey, null>].body}
             </div>
           </div>
         </div>
@@ -206,81 +246,5 @@ const AboutSection = () => {
   );
 };
 
-// --- FAQ Data ---
-const faqs = [
-  {
-    q: "Apakah top up Royal Dream di Koin Shop aman?",
-    a: "Ya, semua transaksi diproses dengan sistem aman dan langsung ke akun game kamu.",
-  },
-  {
-    q: "Berapa lama proses top up?",
-    a: "Proses hanya beberapa detik setelah pembayaran berhasil.",
-  },
-  {
-    q: "Metode pembayaran apa saja yang tersedia?",
-    a: "Kami mendukung e-wallet, transfer bank, dan QRIS.",
-  },
-  {
-    q: "Apakah tersedia layanan 24 jam?",
-    a: "Ya, layanan Koin Shop aktif 24/7.",
-  },
-];
-
-// --- FAQ Section Component ---
-const FaqSection = () => {
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
-
-  const toggle = (i: number) => setOpenIndex(openIndex === i ? null : i);
-
-  return (
-    <section id="faq" className="js-section bg-transparent px-6 py-16">
-      <div className="mx-auto max-w-3xl">
-        <AnimatedContent
-          distance={60}
-          direction="vertical"
-          reverse={false}
-          duration={0.7}
-          ease="power3.out"
-          initialOpacity={0}
-          animateOpacity
-          scale={1}
-          threshold={0.1}
-          delay={0}
-        >
-          <h2 className="mb-2 text-center text-3xl font-semibold text-white">
-            FAQ Top Up Royal Dream
-          </h2>
-          <p className="mb-10 text-center text-sm text-white/50">Pertanyaan yang sering ditanyakan</p>
-
-          <div className="space-y-3">
-            {faqs.map((item, i) => (
-              <div
-                key={i}
-                className="overflow-hidden rounded-xl border border-white/10 bg-white/5 backdrop-blur-sm transition-colors hover:border-[#F6C90E]/30"
-              >
-                <button
-                  onClick={() => toggle(i)}
-                  className="flex w-full items-center justify-between px-5 py-4 text-left"
-                >
-                  <span className="text-sm font-medium text-white">{item.q}</span>
-                  <ChevronDown
-                    className={`ml-4 h-4 w-4 flex-shrink-0 text-[#F6C90E] transition-transform duration-300 ${openIndex === i ? "rotate-180" : ""
-                      }`}
-                  />
-                </button>
-                <div
-                  className={`overflow-hidden px-5 text-sm text-white/60 leading-relaxed transition-all duration-300 ${openIndex === i ? "max-h-40 pb-4" : "max-h-0"
-                    }`}
-                >
-                  {item.a}
-                </div>
-              </div>
-            ))}
-          </div>
-        </AnimatedContent>
-      </div>
-    </section>
-  );
-};
-
 export default AboutSection;
+

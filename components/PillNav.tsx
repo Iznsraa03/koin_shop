@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { gsap } from "gsap";
 import { Menu, X } from "lucide-react";
 
@@ -310,11 +311,14 @@ const PillNav: React.FC<PillNavProps> = ({
               background: "var(--base, #000)",
             }}
           >
-            <img
+            <Image
               src={logo}
               alt={logoAlt}
-              ref={logoImgRef}
+              width={36}
+              height={36}
+              ref={logoImgRef as React.Ref<HTMLImageElement>}
               className="block h-full w-full object-cover"
+              priority
             />
           </a>
         )}
@@ -435,7 +439,7 @@ const PillNav: React.FC<PillNavProps> = ({
             aria-expanded={isMobileMenuOpen}
             aria-controls="mobile-menu"
             onClick={toggleMobileMenu}
-            className="inline-flex h-[var(--nav-h)] w-[var(--nav-h)] items-center justify-center rounded-full border border-white/10 bg-[#0f172b]/90 text-[#F6C90E] backdrop-blur transition-colors hover:bg-[#111c33]"
+            className="inline-flex h-[var(--nav-h)] w-[var(--nav-h)] items-center justify-center rounded-full border border-white/10 bg-[#0f172b] text-[#F6C90E] transition-colors hover:bg-[#111c33]"
           >
             {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
@@ -443,7 +447,7 @@ const PillNav: React.FC<PillNavProps> = ({
           <div
             id="mobile-menu"
             ref={mobileMenuRef}
-            className="invisible absolute right-0 z-[1200] mt-3 w-[min(78vw,320px)] origin-top rounded-2xl border border-white/10 bg-[#0f172b]/92 p-2 opacity-0 shadow-[0_20px_60px_rgba(0,0,0,0.6)] backdrop-blur pointer-events-none"
+            className="invisible absolute right-0 z-[1200] mt-3 w-[min(78vw,320px)] origin-top rounded-2xl border border-white/10 bg-[#0f172b] p-2 opacity-0 shadow-[0_20px_60px_rgba(0,0,0,0.6)] pointer-events-none"
             role="menu"
             aria-label="Mobile menu"
           >

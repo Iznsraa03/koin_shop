@@ -29,10 +29,10 @@ interface AnimatedContentProps extends React.HTMLAttributes<HTMLDivElement> {
 const AnimatedContent: React.FC<AnimatedContentProps> = ({
   children,
   container,
-  distance = 100,
+  distance = 60,
   direction = "vertical",
   reverse = false,
-  duration = 0.8,
+  duration = 0.7,
   ease = "power3.out",
   initialOpacity = 0,
   animateOpacity = true,
@@ -53,6 +53,18 @@ const AnimatedContent: React.FC<AnimatedContentProps> = ({
     const el = ref.current;
     if (!el) return;
 
+    // Skip animation jika user prefer reduced motion
+    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReduced) {
+      el.style.visibility = "visible";
+      el.style.opacity = "1";
+      return;
+    }
+
+    // Di mobile (layar sentuh) kurangi distance agar lebih smooth
+    const isTouchDevice = window.matchMedia("(hover: none)").matches;
+    const effectiveDistance = isTouchDevice ? Math.min(distance, 30) : distance;
+
     let scrollerTarget: Element | string | null =
       container || document.getElementById("snap-main-container") || null;
 
@@ -61,7 +73,7 @@ const AnimatedContent: React.FC<AnimatedContentProps> = ({
     }
 
     const axis = direction === "horizontal" ? "x" : "y";
-    const offset = reverse ? -distance : distance;
+    const offset = reverse ? -effectiveDistance : effectiveDistance;
     const startPct = (1 - threshold) * 100;
 
     gsap.set(el, {
@@ -78,7 +90,7 @@ const AnimatedContent: React.FC<AnimatedContentProps> = ({
         if (onComplete) onComplete();
         if (disappearAfter > 0) {
           gsap.to(el, {
-            [axis]: reverse ? distance : -distance,
+            [axis]: reverse ? effectiveDistance : -effectiveDistance,
             scale: 0.8,
             opacity: animateOpacity ? initialOpacity : 0,
             delay: disappearAfter,
@@ -96,6 +108,8 @@ const AnimatedContent: React.FC<AnimatedContentProps> = ({
       opacity: 1,
       duration,
       ease,
+      // Gunakan force3D agar GPU compositing aktif
+      force3D: true,
     });
 
     const st = ScrollTrigger.create({
