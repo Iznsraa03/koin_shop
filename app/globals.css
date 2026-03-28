@@ -173,3 +173,35 @@
     will-change: auto;
   }
 }
+
+/* Notification Toast: slide in dari kiri */
+@keyframes slide-in-left {
+  from {
+    opacity: 0;
+    transform: translateX(-110%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-slide-in-left {
+  animation: slide-in-left 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Notification Toast: slide in dari kanan */
+@keyframes slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(110%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-slide-in-right {
+  animation: slide-in-right 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}

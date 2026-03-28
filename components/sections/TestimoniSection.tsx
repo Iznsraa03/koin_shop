@@ -27,8 +27,8 @@ const TestimoniSection = () => {
             <span className="flex items-end gap-1 text-7xl font-extrabold leading-none text-[#F6C90E] drop-shadow-[0_0_24px_rgba(246,201,14,0.4)] sm:text-8xl">
               <CountUp
                 from={0}
-                to={4837}
-                separator=","
+                to={8723}
+                separator="."
                 direction="up"
                 duration={2}
                 startWhen={true}

@@ -10,7 +10,7 @@ export default function robots(): MetadataRoute.Robots {
       // Jika nanti ada halaman admin atau private, bisa dimasukkan di sini
       // disallow: ['/admin/', '/private/'],
     },
-    // URL sitemap (pastikan domain sesuai dengan domain asli website nantinya)
-    sitemap: 'https://koinshop.com/sitemap.xml',
+    // sitemap: 'https://koinshop.id/sitemap.xml',
+    sitemap: 'https://koinshop.id/sitemap.xml',
   }
 }

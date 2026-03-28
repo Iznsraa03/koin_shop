@@ -5,7 +5,7 @@ export const dynamic = 'force-static'
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
     {
-      url: 'https://koinshop.com',
+      url: 'https://koinshop.id',
       lastModified: new Date(),
       changeFrequency: 'weekly',
       priority: 1,

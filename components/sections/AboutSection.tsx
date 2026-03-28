@@ -9,7 +9,7 @@ type ModalKey = "privasi" | "syarat" | "refund" | "faq" | null;
 
 const faqsData = [
   {
-    q: "Apakah top up Royal Dream di Koin Shop aman?",
+    q: "Apakah top up di Koin Shop aman?",
     a: "Ya, semua transaksi diproses dengan sistem aman dan langsung ke akun game kamu.",
   },
   {
@@ -74,7 +74,7 @@ const modalContent: Record<Exclude<ModalKey, null>, { title: string; body: React
         <p>Dengan melakukan transaksi di Koinshop.id, pelanggan dianggap telah menyetujui ketentuan berikut:</p>
         <ol className="list-decimal pl-5 space-y-2">
           <li>Koinshop.id adalah penyedia layanan top up pihak ketiga.</li>
-          <li>Kami tidak berafiliasi secara resmi dengan publisher game Royal Dream.</li>
+          <li>Kami tidak berafiliasi secara resmi dengan publisher game manapun.</li>
           <li>Pastikan ID game yang dimasukkan sudah benar sebelum melakukan pembayaran.</li>
           <li>Kesalahan input ID bukan tanggung jawab kami.</li>
           <li>Proses top up dilakukan secara otomatis atau manual sesuai sistem.</li>
@@ -117,7 +117,7 @@ const modalContent: Record<Exclude<ModalKey, null>, { title: string; body: React
     ),
   },
   faq: {
-    title: "FAQ Top Up Royal Dream",
+    title: "FAQ Top Up Game",
     body: (
       <div className="space-y-4 text-sm text-white/70 leading-relaxed">
         {faqsData.map((item, i) => (
@@ -144,15 +144,15 @@ const AboutSection = () => {
           <div className="js-fade-up space-y-6">
             <h2 className="text-3xl font-semibold text-white">Tentang Koin Shop</h2>
             <p className="text-white/70 leading-relaxed">
-              Koin Shop adalah pusat top up Royal Dream terpercaya di Indonesia yang menyediakan
-              layanan top up koin Royal Dream secara cepat, aman, dan transparan. Kami hadir khusus
-              untuk para pemain Royal Dream yang membutuhkan layanan top up dengan harga murah dan
+              Koin Shop adalah pusat top up game terpercaya di Indonesia yang menyediakan
+              layanan top up koin secara cepat, aman, dan transparan. Kami hadir khusus
+              untuk para gamers yang membutuhkan layanan top up dengan harga murah dan
               proses instan tanpa ribet.
             </p>
             <p className="text-white/70 leading-relaxed">
               Dengan sistem otomatis dan monitoring real-time, setiap transaksi diproses secara
               langsung dan dikirim ke akun game kamu tanpa delay. Didukung layanan pelanggan 24/7,
-              Koin Shop memastikan pengalaman top up Royal Dream yang praktis, efisien, dan
+              Koin Shop memastikan pengalaman top up yang praktis, efisien, dan
               terpercaya.
             </p>
             {/* Tombol Kebijakan */}

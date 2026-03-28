@@ -9,6 +9,7 @@ import FeaturesSection from "../components/sections/FeaturesSection";
 import TestimoniSection from "../components/sections/TestimoniSection";
 import AboutSection from "../components/sections/AboutSection";
 import ContactFooter from "../components/sections/ContactFooter";
+import NotificationToast from "../components/NotificationToast";
 
 export interface HeroSlide {
   title: string;
@@ -191,7 +192,9 @@ export default function HomePageClient({ slides }: HomePageClientProps) {
   }, []);
 
   return (
-    <div className="min-h-screen bg-base-color text-white">
+    <main className="min-h-screen bg-base-color text-white">
+      {/* Notification Toast: fixed pojok kiri bawah, tidak ikut scroll */}
+      <NotificationToast />
       <div className="relative overflow-hidden">
 
 
@@ -217,6 +220,6 @@ export default function HomePageClient({ slides }: HomePageClientProps) {
       <TestimoniSection />
       <AboutSection />
       <ContactFooter />
-    </div>
+    </main>
   );
 }
