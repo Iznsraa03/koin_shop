@@ -1,8 +1,22 @@
 # Ensure correct MIME types for Next.js exported assets
 # Fixes cases where .js is served with a wrong handler/MIME (can cause 415 Unsupported Media Type)
 
+# ─── Canonical: Redirect www → non-www ───────────────────────────────────────
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{HTTP_HOST} ^www\.koinshop\.id [NC]
+  RewriteRule ^ https://koinshop.id%{REQUEST_URI} [R=301,L]
+</IfModule>
+
+# ─── Force HTTPS ──────────────────────────────────────────────────────────────
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{HTTPS} off
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+</IfModule>
+
+# ─── MIME Types ───────────────────────────────────────────────────────────────
 <IfModule mod_mime.c>
-  # If your server has a misconfigured handler for .js, remove it.
   <IfModule mod_negotiation.c>
     Options -MultiViews
   </IfModule>
@@ -16,6 +30,7 @@
   AddType application/json .json
   AddType application/wasm .wasm
   AddType image/svg+xml .svg
+  AddType image/webp .webp
   AddType font/woff2 .woff2
   AddType font/woff .woff
   AddType application/vnd.ms-fontobject .eot
@@ -23,14 +38,79 @@
   AddType font/otf .otf
 </IfModule>
 
-# Optional: cache static assets
+# ─── GZIP Compression (Core Web Vitals - Speed) ───────────────────────────────
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html
+  AddOutputFilterByType DEFLATE text/css
+  AddOutputFilterByType DEFLATE text/javascript
+  AddOutputFilterByType DEFLATE application/javascript
+  AddOutputFilterByType DEFLATE application/json
+  AddOutputFilterByType DEFLATE application/xml
+  AddOutputFilterByType DEFLATE text/xml
+  AddOutputFilterByType DEFLATE image/svg+xml
+  AddOutputFilterByType DEFLATE font/woff2
+  AddOutputFilterByType DEFLATE font/woff
+</IfModule>
+
+# ─── Browser Cache (Core Web Vitals - Performance) ───────────────────────────
 <IfModule mod_expires.c>
   ExpiresActive On
-  ExpiresByType application/javascript "access plus 30 days"
-  ExpiresByType text/css "access plus 30 days"
-  ExpiresByType image/svg+xml "access plus 30 days"
+
+  # HTML: short cache (frequently updated)
+  ExpiresByType text/html "access plus 1 hour"
+
+  # CSS & JS: long cache (fingerprinted by Next.js)
+  ExpiresByType application/javascript "access plus 1 year"
+  ExpiresByType text/css "access plus 1 year"
+
+  # Images
   ExpiresByType image/png "access plus 30 days"
   ExpiresByType image/jpeg "access plus 30 days"
   ExpiresByType image/webp "access plus 30 days"
-  ExpiresByType font/woff2 "access plus 365 days"
+  ExpiresByType image/svg+xml "access plus 30 days"
+  ExpiresByType image/x-icon "access plus 1 year"
+
+  # Fonts
+  ExpiresByType font/woff2 "access plus 1 year"
+  ExpiresByType font/woff "access plus 1 year"
+  ExpiresByType application/vnd.ms-fontobject "access plus 1 year"
+</IfModule>
+
+# ─── HTTP Security Headers ────────────────────────────────────────────────────
+<IfModule mod_headers.c>
+  # Prevent MIME sniffing
+  Header set X-Content-Type-Options "nosniff"
+
+  # Prevent Clickjacking
+  Header set X-Frame-Options "SAMEORIGIN"
+
+  # XSS Protection (legacy browsers)
+  Header set X-XSS-Protection "1; mode=block"
+
+  # Referrer Policy
+  Header set Referrer-Policy "strict-origin-when-cross-origin"
+
+  # HSTS: Force HTTPS for 2 years (only after SSL confirmed working)
+  Header set Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
+
+  # Permissions Policy
+  Header set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+
+  # Cache-Control for static assets
+  <FilesMatch "\.(js|css|woff2|woff|png|jpg|jpeg|webp|svg|ico)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+
+  # No cache for HTML
+  <FilesMatch "\.(html)$">
+    Header set Cache-Control "no-cache, no-store, must-revalidate"
+  </FilesMatch>
+</IfModule>
+
+# ─── Prevent Hotlinking ───────────────────────────────────────────────────────
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{HTTP_REFERER} !^$
+  RewriteCond %{HTTP_REFERER} !^https://(www\.)?koinshop\.id [NC]
+  RewriteRule \.(png|jpg|jpeg|webp|gif|svg)$ - [F,NC,L]
 </IfModule>

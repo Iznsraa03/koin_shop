@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 const ContactFooter = () => {
   return (
     <footer id="contact" className="border-t border-[#F6C90E]/40 bg-base-color/90 backdrop-blur px-6 pt-10 pb-6">
@@ -9,15 +11,15 @@ const ContactFooter = () => {
           {/* Kolom 1: Brand */}
           <div className="flex flex-col gap-3">
             <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full border border-[#F6C90E]/50 bg-[#111c33]">
-                <img src="/logo.png" alt="Koin Shop" className="h-full w-full object-cover" />
+              <div className="flex h-10 w-10 relative items-center justify-center overflow-hidden rounded-full border border-[#F6C90E]/50 bg-[#111c33]">
+                <Image src="/logo.png" alt="Koin Shop" width={40} height={40} className="h-full w-full object-cover" />
               </div>
               <div>
                 <p className="text-sm font-semibold uppercase tracking-[0.2em] text-white">Koin Shop</p>
                 <p className="text-xs text-white/50">Top Up Game Instan</p>
               </div>
             </div>
-            <p className="text-xs text-white/40 leading-relaxed">
+            <p className="text-xs text-white/60 leading-relaxed">
               Solusi top up game tercepat dan terpercaya. Proses instan, harga terjangkau, tersedia 24 jam.
             </p>
           </div>
@@ -53,7 +55,7 @@ const ContactFooter = () => {
           {/* Kolom 3: Disclaimer */}
           <div className="flex flex-col gap-3">
             <p className="text-xs font-semibold uppercase tracking-widest text-[#F6C90E]">Disclaimer</p>
-            <p className="text-xs leading-relaxed text-white/40">
+            <p className="text-xs leading-relaxed text-white/60">
               Website ini menyediakan layanan pembelian koin dan item digital untuk kebutuhan game hiburan.
               Kami tidak terafiliasi dengan pengembang resmi dan tidak menyediakan layanan perjudian atau
               aktivitas ilegal dalam bentuk apa pun.
@@ -64,7 +66,7 @@ const ContactFooter = () => {
 
         {/* Copyright */}
         <div className="border-t border-white/10 pt-5">
-          <p className="text-xs text-white/30">© 2026 Koin Shop. All rights reserved.</p>
+          <p className="text-xs text-white/60">© 2026 Koin Shop. All rights reserved.</p>
         </div>
 
       </div>

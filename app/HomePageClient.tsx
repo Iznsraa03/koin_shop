@@ -5,11 +5,9 @@ import PillNav from "../components/PillNav";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import HeroSection from "../components/sections/HeroSection";
-import FeaturesSection from "../components/sections/FeaturesSection";
-import TestimoniSection from "../components/sections/TestimoniSection";
-import AboutSection from "../components/sections/AboutSection";
-import ContactFooter from "../components/sections/ContactFooter";
-import NotificationToast from "../components/NotificationToast";
+import dynamic from "next/dynamic";
+
+const NotificationToast = dynamic(() => import("../components/NotificationToast"), { ssr: false });
 
 export interface HeroSlide {
   title: string;
@@ -192,12 +190,10 @@ export default function HomePageClient({ slides }: HomePageClientProps) {
   }, []);
 
   return (
-    <main className="min-h-screen bg-base-color text-white">
+    <>
       {/* Notification Toast: fixed pojok kiri bawah, tidak ikut scroll */}
       <NotificationToast />
       <div className="relative overflow-hidden">
-
-
         <PillNav
           logo="/logo.png"
           logoAlt="Koin Shop Logo"
@@ -215,11 +211,6 @@ export default function HomePageClient({ slides }: HomePageClientProps) {
 
         <HeroSection slides={heroSlides} activeSlide={activeSlide} onSlideChange={setActiveSlide} />
       </div>
-
-      <FeaturesSection />
-      <TestimoniSection />
-      <AboutSection />
-      <ContactFooter />
-    </main>
+    </>
   );
 }

@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -17,7 +18,6 @@ export const viewport: Viewport = {
   colorScheme: "dark",
   width: "device-width",
   initialScale: 1,
-  maximumScale: 1,
 };
 
 export const metadata: Metadata = {
@@ -33,101 +33,27 @@ export const metadata: Metadata = {
     "Royal Dream chip murah",
     "Koinshop Royal Dream",
     "Top up Royal Dream murah",
-    "Cara beli chip Royal Dream",
     "Agen chip Royal Dream terpercaya",
     "Isi koin Royal Dream",
-    "Royal Dream top up koinshop",
     "Harga chip Royal Dream terbaru",
     "Top up Royal Dream via Pulsa",
-    "Top up Royal Dream Dana",
-    "Top up Royal Dream Gopay",
-    "Top up Royal Dream QRIS",
     "Jual chip Royal Dream murah",
-    "Chip Royal Dream via LinkAja",
     "Top up Royal Dream 24 jam",
-    "Tempat isi chip Royal Dream",
-    "Royal Dream chip ungu murah",
-    "Top up Royal Dream resmi",
-    "Chip Royal Dream 1B murah",
-    "Top up Royal Dream 200M",
-    "Harga chip Royal Dream 500M",
-    "Beli koin Royal Dream 2B",
-    "Chip Royal Dream 5B termurah",
-    "Top up koin emas Royal Dream",
-    "Paket chip Royal Dream",
-    "Promo koin Royal Dream hari ini",
-    "Diskon top up Royal Dream",
-    "Koin Royal Dream harga grosir",
-    "Top up koin Royal Dream lewat ShopeePay",
-    "Beli koin Royal Dream pakai OVO",
-    "Cara top up koin Royal Dream di Koinshop",
-    "Royal Dream chip koin emas",
-    "Top up Royal Dream tercepat",
-    "Chip Royal Dream termurah 2026",
-    "Top up Royal Dream tanpa aplikasi",
-    "Jasa isi koin Royal Dream",
-    "Koin Royal Dream legal",
-    "Top up Royal Dream id aman",
-    "Situs top up Royal Dream terbaik",
-    "Rekomendasi tempat beli chip Royal Dream",
-    "Cara top up Royal Dream di Koinshop.id",
-    "Koinshop id penipu atau tidak",
-    "Testimoni koinshop top up Royal Dream",
-    "Top up Royal Dream paling murah dimana",
-    "Cara dapat chip Royal Dream murah",
-    "Top up Royal Dream langsung masuk",
-    "Chip Royal Dream aman anti banned",
-    "Cara beli koin Royal Dream pakai pulsa Telkomsel",
-    "Top up Royal Dream pulsa XL",
-    "Top up Royal Dream pulsa Indosat",
-    "Isi koin Royal Dream lewat Alfamart",
-    "Isi koin Royal Dream lewat Indomaret",
-    "Link top up Royal Dream resmi",
-    "Website top up Royal Dream terpercaya",
-    "Jual koin Royal Dream eceran",
-    "Harga chip Royal Dream koinshop hari ini",
-    "Top up Royal Dream login ID",
-    "Chip Royal Dream murah meriah",
-    "Update harga chip Royal Dream",
-    "Event top up Royal Dream terbaru",
-    "Royal Dream chip koin gratis",
-    "Cara redeem code Royal Dream",
-    "Kode promo Koinshop Royal Dream",
-    "Top up Royal Dream bonus chip",
-    "Cashback top up Royal Dream",
-    "Cara beli chip Royal Dream via bank transfer",
-    "Top up Royal Dream virtual account",
-    "Jual koin Royal Dream via QRIS",
-    "Topup Royal Dream",
-    "Top up Royal Drem",
-    "Beli chip Royal Dreams",
-    "Roial Dream top up",
-    "Koin shop Royal Dream",
-    "Chip Royal Dream 1 Milyar",
-    "Harga chip RD murah",
-    "Top up RD via Koinshop",
-    "Chip Royal Dream koin emas murah",
-    "Tempat beli koin RD terpercaya",
-    "Royal Dream top up game",
-    "Top up game Royal Dream koinshop",
-    "Chip Royal Dream harga kawan",
-    "Agen resmi Royal Dream chip",
-    "Distributor chip Royal Dream",
-    "Top up koin Royal Dream paling cepat",
-    "Cara isi saldo Royal Dream",
-    "Top up Royal Dream pakai saldo dana",
-    "Jual koin emas Royal Dream murah",
-    "Daftar harga koin Royal Dream 2026",
-    "Top up Royal Dream Jakarta",
-    "Top up Royal Dream Surabaya",
-    "Top up Royal Dream Medan",
-    "Komunitas Royal Dream Indonesia top up",
-    "Grosir chip Royal Dream murah",
-    "Royal Dream top up promo gila",
-    "Chip Royal Dream murah amanah",
-    "Cara top up Royal Dream mudah dan murah",
-    "Situs jual chip Royal Dream terlaris",
-    "Koinshop top up game no 1"
+    "Beli koin Royal Dream",
+    "Chip Royal Dream termurah",
+    "Koinshop id",
+    "Top up Royal Dream Dana",
+    "Top up Royal Dream QRIS",
+    "Chip Royal Dream aman",
+    "Royal Dream top up koinshop",
+    "Situs top up Royal Dream terpercaya",
+    "Beli koin emas Royal Dream",
+    "koinshop.id",
+    "top up game online Indonesia",
+    "jual koin game murah",
+    "top up Royal Dream GoPay",
+    "top up Royal Dream OVO",
+    "cara top up Royal Dream",
   ],
   authors: [{ name: "Koin Shop" }],
   icons: {
@@ -164,10 +90,10 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "https://koinshop.id/logo.png",
+        url: "https://koinshop.id/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Koin Shop - Top Up Royal Dream",
+        alt: "Koin Shop - Layanan Top Up Royal Dream Termurah & Terpercaya di Indonesia",
       },
     ],
   },
@@ -175,7 +101,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Koin Shop | TopUp Tercepat Termurah Indonesia",
     description: "Layanan top up game Royal Dream termurah, tercepat, dan terpercaya. Beli koin Royal Dream aman dan instan hanya di Koin Shop.",
-    images: ["https://koinshop.id/logo.png"],
+    images: ["https://koinshop.id/og-image.png"],
   },
 };
 
@@ -192,10 +118,18 @@ export default function RootLayout({
         "@id": "https://koinshop.id/#website",
         "url": "https://koinshop.id/",
         "name": "Koin Shop",
-        "alternateName": ["Top Up Royal Dream Termurah", "Koin Royal Dream Murah", "Koin Shop Royal Dream", "Top Up Game Koinshop"],
-        "description": "Layanan top up game Royal Dream termurah, tercepat, dan terpercaya.",
+        "alternateName": ["Top Up Royal Dream Termurah", "Koin Royal Dream Murah", "Koin Shop Royal Dream", "Top Up Game Koinshop", "koinshop.id"],
+        "description": "Layanan top up game Royal Dream termurah, tercepat, dan terpercaya di Indonesia.",
         "publisher": {
           "@id": "https://koinshop.id/#organization"
+        },
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "https://koinshop.id/?s={search_term_string}"
+          },
+          "query-input": "required name=search_term_string"
         },
         "inLanguage": "id-ID"
       },
@@ -207,14 +141,32 @@ export default function RootLayout({
         "logo": {
           "@type": "ImageObject",
           "url": "https://koinshop.id/logo.png",
-          "width": 1200,
-          "height": 630
+          "width": 512,
+          "height": 512
         },
-        "description": "Platform Top Up Game dan Koin Royal Dream Terpercaya di Indonesia.",
+        "image": "https://koinshop.id/og-image.png",
+        "description": "Platform Top Up Game dan Koin Royal Dream Terpercaya di Indonesia. Proses instan 24 jam, harga termurah, pembayaran lengkap.",
+        "foundingDate": "2024",
+        "areaServed": "ID",
+        "knowsLanguage": "id",
+        "sameAs": [
+          "https://instagram.com/koinshop.id",
+          "https://wa.me/",
+          "https://www.tiktok.com/@koinshop.id"
+        ],
         "contactPoint": {
           "@type": "ContactPoint",
           "contactType": "customer support",
-          "availableLanguage": "Indonesian"
+          "availableLanguage": "Indonesian",
+          "contactOption": "TollFree",
+          "areaServed": "ID"
+        },
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.9",
+          "reviewCount": "312",
+          "bestRating": "5",
+          "worstRating": "1"
         }
       },
       {
@@ -227,6 +179,19 @@ export default function RootLayout({
             "item": "https://koinshop.id/"
           }
         ]
+      },
+      {
+        "@type": "Service",
+        "@id": "https://koinshop.id/#service",
+        "name": "Top Up Royal Dream",
+        "provider": { "@id": "https://koinshop.id/#organization" },
+        "serviceType": "Digital Game Currency Top Up",
+        "description": "Layanan top up koin emas Royal Dream dengan proses otomatis instan, harga termurah, dan berbagai metode pembayaran.",
+        "areaServed": "ID",
+        "availableChannel": {
+          "@type": "ServiceChannel",
+          "serviceUrl": "https://royalurban.net"
+        }
       }
     ]
   };
@@ -234,13 +199,24 @@ export default function RootLayout({
   return (
     <html lang="id">
       <head>
+        {/* Google tag (gtag.js) */}
+        <Script src="https://www.googletagmanager.com/gtag/js?id=G-DE2572SFG1" strategy="afterInteractive" />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-DE2572SFG1');
+          `}
+        </Script>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        {children}
+        <main>{children}</main>
       </body>
     </html>
   );

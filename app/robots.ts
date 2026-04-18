@@ -7,8 +7,8 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: '*',
       allow: '/',
-      // Jika nanti ada halaman admin atau private, bisa dimasukkan di sini
-      // disallow: ['/admin/', '/private/'],
+      // Cegah crawler Google mengindex link email-protection dari Cloudflare (menghindari error 404)
+      disallow: ['/cdn-cgi/'],
     },
     // sitemap: 'https://koinshop.id/sitemap.xml',
     sitemap: 'https://koinshop.id/sitemap.xml',

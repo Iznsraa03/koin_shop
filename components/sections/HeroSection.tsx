@@ -25,14 +25,15 @@ const HeroSection = ({ slides, activeSlide, onSlideChange }: HeroSectionProps) =
       <div className="mx-auto grid w-full max-w-6xl items-center gap-10 lg:grid-cols-2">
         <div className="space-y-6 text-center lg:text-left">
           <SplitText
-            text="Top Up Game Murah & Terpercaya di Indonesia "
+            tag="h1"
+            text="Top Up Royal Dream Murah & Terpercaya di Indonesia"
             className="js-hero-reveal text-4xl font-semibold text-white sm:text-5xl lg:text-6xl"
             splitType="chars"
             ease="power3.out"
             duration={1.25}
           />
           <p className="js-hero-reveal text-base text-white/70 sm:text-lg">
-            Nikmati layanan top up game dengan proses instan, harga terbaik, dan pembayaran lengkap hanya di Koin Shop.
+            Nikmati layanan top up koin Royal Dream dengan proses instan, harga terbaik, dan pembayaran lengkap hanya di Koin Shop.
           </p>
           <div className="js-hero-reveal flex flex-wrap justify-center gap-4 pt-4 lg:justify-start">
             <a
@@ -47,7 +48,7 @@ const HeroSection = ({ slides, activeSlide, onSlideChange }: HeroSectionProps) =
           </div>
         </div>
 
-        <div className="js-hero-reveal mx-auto flex w-full max-w-xl flex-col items-center gap-4 lg:items-end">
+        <div className="mx-auto flex w-full max-w-xl flex-col items-center gap-4 lg:items-end">
           <div
             className={`relative w-full aspect-[3/2] overflow-hidden rounded-2xl border border-[#2563eb]/40 bg-linear-to-br ${slides[activeSlide].accent
               } p-2`}

@@ -2,6 +2,9 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import HomePageClient, { type HeroSlide } from "./HomePageClient";
 
+export const dynamic = "force-static";
+export const revalidate = 86400; // Cache selama 1 hari (revalidate background)
+
 const ACCENTS = [
   "from-[#2563eb]/30 via-[#0f172b] to-[#0b1120]",
   "from-[#1b4fa8]/35 via-[#111c33] to-[#0f172b]",
@@ -17,6 +20,13 @@ function titleFromFilename(filename: string) {
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
     .join(" ");
 }
+
+import FeaturesSection from "../components/sections/FeaturesSection";
+import TestimoniSection from "../components/sections/TestimoniSection";
+import AboutSection from "../components/sections/AboutSection";
+import SEOContentSection from "../components/sections/SEOContentSection";
+import FAQSection from "../components/sections/FAQSection";
+import ContactFooter from "../components/sections/ContactFooter";
 
 export default async function Home() {
   const carouselDir = path.join(process.cwd(), "public", "carousel");
@@ -38,5 +48,15 @@ export default async function Home() {
     image: `/carousel/${name}`,
   }));
 
-  return <HomePageClient slides={slides.length ? slides : []} />;
+  return (
+    <main className="min-h-screen bg-base-color text-white">
+      <HomePageClient slides={slides.length ? slides : []} />
+      <FeaturesSection />
+      <TestimoniSection />
+      <AboutSection />
+      <SEOContentSection />
+      <FAQSection />
+      <ContactFooter />
+    </main>
+  );
 }
