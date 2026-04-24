@@ -18,7 +18,6 @@ export interface HeroSlide {
 
 const navItems = [
   { label: "Home", href: "#home" },
-  { label: "Produk", href: "/produk" },
   { label: "Features", href: "#features" },
   { label: "About", href: "#about" },
   { label: "Contact", href: "#contact" },
