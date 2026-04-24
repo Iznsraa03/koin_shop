@@ -52,13 +52,15 @@ const ContactFooter = () => {
             </div>
           </div>
 
-          {/* Kolom 3: Disclaimer */}
+          {/* Kolom 3: Sitemap/Links */}
           <div className="flex flex-col gap-3">
-            <p className="text-xs font-semibold uppercase tracking-widest text-[#F6C90E]">Disclaimer</p>
-            <p className="text-xs leading-relaxed text-white/60">
-              Website ini menyediakan layanan pembelian koin dan item digital untuk kebutuhan game hiburan.
-              Kami tidak terafiliasi dengan pengembang resmi dan tidak menyediakan layanan perjudian atau
-              aktivitas ilegal dalam bentuk apa pun.
+            <p className="text-xs font-semibold uppercase tracking-widest text-[#F6C90E]">Navigasi</p>
+            <div className="flex flex-col gap-2">
+              <a href="/produk" className="text-sm text-white/60 transition hover:text-[#F6C90E] w-fit">Daftar Produk</a>
+              <a href="/sitemap.xml" className="text-sm text-white/60 transition hover:text-[#F6C90E] w-fit">Sitemap</a>
+            </div>
+            <p className="mt-2 text-xs leading-relaxed text-white/60">
+              © 2026 Koin Shop. Solusi top up game hiburan instan & aman.
             </p>
           </div>
 

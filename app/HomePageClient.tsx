@@ -18,6 +18,7 @@ export interface HeroSlide {
 
 const navItems = [
   { label: "Home", href: "#home" },
+  { label: "Produk", href: "/produk" },
   { label: "Features", href: "#features" },
   { label: "About", href: "#about" },
   { label: "Contact", href: "#contact" },
@@ -36,6 +37,7 @@ export default function HomePageClient({ slides }: HomePageClientProps) {
   const [activeHref, setActiveHref] = useState("#home");
   const [progressByHref, setProgressByHref] = useState<Record<string, number>>({
     "#home": 0,
+    "/produk": 0,
     "#features": 0,
     "#about": 0,
     "#contact": 0,
