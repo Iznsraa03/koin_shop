@@ -60,6 +60,7 @@ export default function HomePageClient({ slides }: HomePageClientProps) {
   // Scroll progress tracker — throttled via requestAnimationFrame
   useEffect(() => {
     const sections = navItems
+      .filter((item) => item.href.startsWith("#"))
       .map((item) => ({
         href: item.href,
         element: document.querySelector<HTMLElement>(item.href),
