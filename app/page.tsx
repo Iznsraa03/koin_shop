@@ -2,6 +2,26 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import HomePageClient, { type HeroSlide } from "./HomePageClient";
 
+export const metadata = {
+  title: 'Koin Shop | Top Up Game Murah & Terpercaya Indonesia',
+  description: 'Top up game murah, cepat, dan terpercaya di Indonesia. Tersedia Royal Dream, Mobile Legends, dan game lainnya. Proses instan 24 jam.',
+  alternates: {
+    canonical: 'https://koinshop.id',
+  },
+  openGraph: {
+    title: 'Koin Shop | Top Up Game Murah & Terpercaya',
+    description: 'Top up game murah dan instan di koinshop.id',
+    url: 'https://koinshop.id',
+    siteName: 'Koin Shop',
+    locale: 'id_ID',
+    type: 'website',
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+}
+
 export const dynamic = "force-static";
 export const revalidate = 86400; // Cache selama 1 hari (revalidate background)
 
