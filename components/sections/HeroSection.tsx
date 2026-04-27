@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { useEffect } from "react";
 import SplitText from "../SplitText";
 
 interface HeroSlide {
@@ -16,6 +17,20 @@ interface HeroSectionProps {
 
 const HeroSection = ({ slides, activeSlide, onSlideChange }: HeroSectionProps) => {
   if (!slides.length) return null;
+
+  // Preload next slide image to reduce delay on transition
+  useEffect(() => {
+    const nextIndex = (activeSlide + 1) % slides.length;
+    const link = document.createElement('link');
+    link.rel = 'prefetch';
+    link.as = 'image';
+    // Prefetch mobile version on small screens, desktop version otherwise
+    link.href = window.innerWidth < 768
+      ? slides[nextIndex].image.replace('.webp', '_mobile.webp')
+      : slides[nextIndex].image;
+    document.head.appendChild(link);
+    return () => { document.head.removeChild(link); };
+  }, [activeSlide, slides]);
 
   return (
     <section
@@ -53,16 +68,37 @@ const HeroSection = ({ slides, activeSlide, onSlideChange }: HeroSectionProps) =
             className={`relative w-full aspect-[3/2] overflow-hidden rounded-2xl border border-[#2563eb]/40 bg-linear-to-br ${slides[activeSlide].accent
               } p-2`}
           >
-            <Image
-              src={slides[activeSlide].image}
-              alt={slides[activeSlide].title}
-              fill
-              className="object-cover"
-              sizes="(max-width: 1024px) 100vw, 520px"
-              priority
-              fetchPriority="high"
-              decoding="sync"
-            />
+            {slides.map((slide, index) => {
+              const isActive = index === activeSlide;
+              const isFirst = index === 0;
+              // Tentukan src yang tepat: mobile versi untuk <768px, desktop untuk yang lain
+              // Karena ini server component (SSR), kita pakai src desktop secara default
+              // dan biarkan browser memilih via sizes + srcset yang dihasilkan Next.js
+              const mobileSrc = slide.image.replace('.webp', '_mobile.webp');
+              // Compute final src sebelum JSX untuk menghindari duplicate prop
+              const resolvedSrc = typeof window !== 'undefined' && window.innerWidth < 768
+                ? mobileSrc
+                : slide.image;
+              return (
+                <Image
+                  key={slide.image}
+                  src={resolvedSrc}
+                  alt={slide.title}
+                  fill
+                  // sizes akurat: 100vw di mobile (<768px), 520px di desktop
+                  sizes="(max-width: 768px) 100vw, 520px"
+                  // Prioritaskan hanya slot pertama (LCP element)
+                  priority={isFirst}
+                  fetchPriority={isFirst ? 'high' : 'low'}
+                  // Slide non-aktif dimuat lazy kecuali slide pertama
+                  loading={isFirst ? 'eager' : 'lazy'}
+                  decoding={isFirst ? 'sync' : 'async'}
+                  className={`object-cover transition-opacity duration-500 ${
+                    isActive ? 'opacity-100' : 'opacity-0 pointer-events-none'
+                  }`}
+                />
+              );
+            })}
             <div className="absolute inset-0 bg-linear-to-t from-[#111827]/70 via-transparent to-transparent" />
           </div>
           <div className="flex justify-center gap-2 lg:justify-end">

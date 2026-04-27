@@ -58,44 +58,51 @@ export default function HomePageClient({ slides }: HomePageClientProps) {
 
   // Scroll progress tracker — throttled via requestAnimationFrame
   useEffect(() => {
-    const sections = navItems
-      .filter((item) => item.href.startsWith("#"))
-      .map((item) => ({
-        href: item.href,
-        element: document.querySelector<HTMLElement>(item.href),
-      }))
-      .filter(
-        (entry): entry is { href: (typeof navItems)[number]["href"]; element: HTMLElement } =>
-          Boolean(entry.element)
-      );
+    // Build section data: query DOM & CACHE posisi layout saat mount
+    // Membaca offsetTop di sini (sekali) mencegah forced reflow setiap scroll event
+    type SectionEntry = {
+      href: (typeof navItems)[number]["href"];
+      element: HTMLElement;
+      top: number;    // cached offsetTop
+      height: number; // cached offsetHeight
+    };
 
+    const buildSections = (): SectionEntry[] =>
+      navItems
+        .filter((item) => item.href.startsWith("#"))
+        .flatMap((item) => {
+          const element = document.querySelector<HTMLElement>(item.href);
+          if (!element) return [];
+          return [{
+            href: item.href as (typeof navItems)[number]["href"],
+            element,
+            top: element.offsetTop,       // baca sekali saat mount
+            height: element.offsetHeight, // baca sekali saat mount
+          }];
+        });
+
+    let sections = buildSections();
     if (!sections.length) return;
 
     const computeProgress = () => {
+      // Hanya window.scrollY yang dibaca setiap frame — TIDAK ada layout read lain
       const viewportMid = window.scrollY + window.innerHeight * 0.35;
 
-      const current = sections
-        .map((section) => {
-          const top = section.element.offsetTop;
-          const bottom = top + section.element.offsetHeight;
-          const within = viewportMid >= top && viewportMid < bottom;
-          const rawProgress = (viewportMid - top) / section.element.offsetHeight;
-          const progress = Math.min(1, Math.max(0, rawProgress));
-          return { href: section.href, within, progress };
-        })
-        .find((entry) => entry.within);
-
-      if (current) setActiveHref(current.href);
-
-      setProgressByHref((prev) => {
-        const next: Record<string, number> = { ...prev };
-        for (const section of sections) {
-          if (current?.href === section.href) {
-            next[section.href] = current.progress;
-          }
-        }
-        return next;
+      const current = sections.find((section) => {
+        const bottom = section.top + section.height;
+        return viewportMid >= section.top && viewportMid < bottom;
       });
+
+      if (current) {
+        const rawProgress = (viewportMid - current.top) / current.height;
+        const progress = Math.min(1, Math.max(0, rawProgress));
+
+        setActiveHref(current.href);
+        setProgressByHref((prev) => {
+          if (prev[current.href] === progress) return prev; // skip re-render jika sama
+          return { ...prev, [current.href]: progress };
+        });
+      }
 
       rafScrollRef.current = null;
     };
@@ -106,10 +113,14 @@ export default function HomePageClient({ slides }: HomePageClientProps) {
       rafScrollRef.current = requestAnimationFrame(computeProgress);
     };
 
-    // Debounce resize: hanya eksekusi setelah resize berhenti 150ms
+    // Debounce resize: re-cache posisi layout setelah resize berhenti 150ms
     const updateOnResize = () => {
       if (resizeTimerRef.current) clearTimeout(resizeTimerRef.current);
-      resizeTimerRef.current = setTimeout(computeProgress, 150);
+      resizeTimerRef.current = setTimeout(() => {
+        // Re-read DOM positions setelah resize selesai
+        sections = buildSections();
+        computeProgress();
+      }, 150);
     };
 
     computeProgress(); // initial call

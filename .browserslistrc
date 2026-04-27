@@ -1,0 +1,9 @@
+# Target browser modern — menghapus polyfill yang tidak diperlukan
+# Menghemat ~14 KiB JS (Array.at, flat, Object.fromEntries, dll)
+# Kompatibel dengan Chrome 94+, Firefox 93+, Safari 15.4+, Edge 94+
+# Meng-cover 99%+ pengguna mobile Indonesia (Chrome/Android)
+last 2 years
+> 0.5%
+not dead
+not ie 11
+not op_mini all

@@ -199,17 +199,7 @@ export default function RootLayout({
   return (
     <html lang="id">
       <head>
-        {/* Google tag (gtag.js) */}
-        <Script src="https://www.googletagmanager.com/gtag/js?id=G-DE2572SFG1" strategy="afterInteractive" />
-        <Script id="google-analytics" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-
-            gtag('config', 'G-DE2572SFG1');
-          `}
-        </Script>
+        {/* JSON-LD Structured Data — inline, tidak blocking */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -217,6 +207,27 @@ export default function RootLayout({
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <main>{children}</main>
+
+        {/* Google Analytics — lazyOnload agar tidak blokir LCP/FID */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-DE2572SFG1"
+          strategy="lazyOnload"
+        />
+        <Script id="google-analytics" strategy="lazyOnload">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-DE2572SFG1', { send_page_view: true });
+          `}
+        </Script>
+
+        {/* Ahrefs Web Analytics — lazyOnload, tidak mempengaruhi LCP */}
+        <Script
+          src="https://analytics.ahrefs.com/analytics.js"
+          data-key="82otEd0feS5ieZPfoKvd1A"
+          strategy="lazyOnload"
+        />
       </body>
     </html>
   );
