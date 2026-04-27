@@ -36,5 +36,5 @@ const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 ${[...staticPages, ...productPages].join('\n')}
 </urlset>`
 
-writeFileSync('out/sitemap.xml', sitemap)
-console.log('✅ sitemap.xml generated at out/sitemap.xml')
+writeFileSync('public/sitemap.xml', sitemap)
+console.log('✅ sitemap.xml generated at public/sitemap.xml')
