@@ -24,6 +24,7 @@ function urlEntry(url, priority = 0.8, changefreq = 'weekly') {
 const staticPages = [
   urlEntry(BASE_URL, 1.0, 'daily'),
   urlEntry(`${BASE_URL}/produk`, 0.9, 'daily'),
+  urlEntry(`${BASE_URL}/artikel/top-up-royal-dream-termurah`, 0.8, 'weekly'),
 ]
 
 const productPages = products.map((p) =>
