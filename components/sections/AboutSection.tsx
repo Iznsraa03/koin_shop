@@ -202,7 +202,7 @@ const AboutSection = () => {
             >
               <Image
                 src="/logo.png"
-                alt="Koin Shop"
+                alt="Koin Shop logo top up game terpercaya"
                 width={160}
                 height={160}
                 className="rovo-float-logo object-contain"

@@ -3,14 +3,14 @@ import path from "node:path";
 import HomePageClient, { type HeroSlide } from "./HomePageClient";
 
 export const metadata = {
-  title: 'Koin Shop | Top Up Game Murah & Terpercaya Indonesia',
-  description: 'Top up game murah, cepat, dan terpercaya di Indonesia. Tersedia Royal Dream, Mobile Legends, dan game lainnya. Proses instan 24 jam.',
+  title: 'Top Up Royal Dream Murah & Terpercaya | Koin Shop',
+  description: 'Top up Royal Dream murah & instan di Koin Shop. Proses otomatis 24 jam, harga mulai Rp15.000, pembayaran QRIS & e-wallet. 10.000+ pelanggan puas. Order sekarang!',
   alternates: {
     canonical: 'https://koinshop.id',
   },
   openGraph: {
-    title: 'Koin Shop | Top Up Game Murah & Terpercaya',
-    description: 'Top up game murah dan instan di koinshop.id',
+    title: 'Top Up Royal Dream Murah & Terpercaya | Koin Shop',
+    description: 'Top up Royal Dream murah dan instan di koinshop.id. Harga termurah, proses otomatis 24 jam.',
     url: 'https://koinshop.id',
     siteName: 'Koin Shop',
     locale: 'id_ID',
@@ -61,12 +61,20 @@ export default async function Home() {
     .filter((name) => /\.(png|jpe?g|webp|gif)$/i.test(name))
     .sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: "base" }));
 
-  const slides: HeroSlide[] = images.map((name, index) => ({
-    title: titleFromFilename(name),
-    description: "",
-    accent: ACCENTS[index % ACCENTS.length],
-    image: `/carousel/${name}`,
-  }));
+  const slides: HeroSlide[] = images.map((name, index) => {
+    let slideTitle = "";
+    if (name.includes("image_1")) slideTitle = "Banner top up Royal Dream murah";
+    else if (name.includes("image_2")) slideTitle = "Promo koin Royal Dream Koin Shop";
+    else if (name.includes("image_3")) slideTitle = "Top up Royal Dream instan 2026";
+    else slideTitle = "Harga diamond Royal Dream termurah";
+
+    return {
+      title: slideTitle,
+      description: "",
+      accent: ACCENTS[index % ACCENTS.length],
+      image: `/carousel/${name}`,
+    };
+  });
 
   return (
     <main className="min-h-screen bg-base-color text-white">

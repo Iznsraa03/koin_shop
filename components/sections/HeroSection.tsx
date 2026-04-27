@@ -41,7 +41,7 @@ const HeroSection = ({ slides, activeSlide, onSlideChange }: HeroSectionProps) =
         <div className="space-y-6 text-center lg:text-left">
           <SplitText
             tag="h1"
-            text="Top Up Royal Dream Murah & Terpercaya di Indonesia"
+            text="Top Up Royal Dream Murah, Instan & Aman di Indonesia"
             className="js-hero-reveal text-4xl font-semibold text-white sm:text-5xl lg:text-6xl"
             splitType="chars"
             ease="power3.out"
@@ -50,16 +50,22 @@ const HeroSection = ({ slides, activeSlide, onSlideChange }: HeroSectionProps) =
           <p className="js-hero-reveal text-base text-white/70 sm:text-lg">
             Nikmati layanan top up koin Royal Dream dengan proses instan, harga terbaik, dan pembayaran lengkap hanya di Koin Shop.
           </p>
-          <div className="js-hero-reveal flex flex-wrap justify-center gap-4 pt-4 lg:justify-start">
+          <div className="js-hero-reveal flex flex-col items-center gap-4 pt-4 lg:items-start">
             <a
               href="https://royalurban.net"
               className="inline-flex items-center justify-center rounded-full border border-[#F6C90E] bg-[#F6C90E] px-7 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-base-color shadow-[0_0_30px_rgba(246,201,14,0.25)] transition hover:-translate-y-0.5 hover:shadow-[0_0_45px_rgba(37,99,235,0.35)]"
-              aria-label="Order Sekarang"
+              aria-label="Top Up Royal Dream Sekarang"
               target="_blank"
               rel="noreferrer"
             >
-              Order Disini!
+              Top Up Royal Dream Sekarang
             </a>
+            <div className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10">
+              <span className="flex h-2 w-2 rounded-full bg-green-500 animate-pulse" />
+              <span className="text-xs font-medium text-white/80 tracking-wide">
+                <span className="text-[#F6C90E] font-bold">10.000+</span> Pelanggan Puas
+              </span>
+            </div>
           </div>
         </div>
 

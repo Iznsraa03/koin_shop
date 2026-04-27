@@ -12,7 +12,7 @@ const ContactFooter = () => {
           <div className="flex flex-col gap-3">
             <div className="flex items-center gap-3">
               <div className="flex h-10 w-10 relative items-center justify-center overflow-hidden rounded-full border border-[#F6C90E]/50 bg-[#111c33]">
-                <Image src="/logo.png" alt="Koin Shop" width={40} height={40} className="h-full w-full object-cover" />
+                <Image src="/logo.png" alt="Koin Shop logo top up game terpercaya" width={40} height={40} className="h-full w-full object-cover" />
               </div>
               <div>
                 <p className="text-sm font-semibold uppercase tracking-[0.2em] text-white">Koin Shop</p>
@@ -56,7 +56,7 @@ const ContactFooter = () => {
           <div className="flex flex-col gap-3">
             <p className="text-xs font-semibold uppercase tracking-widest text-[#F6C90E]">Navigasi</p>
             <div className="flex flex-col gap-2">
-              <a href="/produk" className="text-sm text-white/60 transition hover:text-[#F6C90E] w-fit">Daftar Produk</a>
+              <a href="/produk" className="text-sm text-white/60 transition hover:text-[#F6C90E] w-fit">Top Up Royal Dream - Semua Paket</a>
               <a href="/sitemap.xml" className="text-sm text-white/60 transition hover:text-[#F6C90E] w-fit">Sitemap</a>
             </div>
             <p className="mt-2 text-xs leading-relaxed text-white/60">

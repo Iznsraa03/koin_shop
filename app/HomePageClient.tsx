@@ -209,7 +209,7 @@ export default function HomePageClient({ slides }: HomePageClientProps) {
       <div className="relative overflow-hidden">
         <PillNav
           logo="/logo.png"
-          logoAlt="Koin Shop Logo"
+          logoAlt="Koin Shop logo top up game terpercaya"
           items={navItems as unknown as { label: string; href: string }[]}
           activeHref={activeHref}
           progressByHref={progressByHref}
