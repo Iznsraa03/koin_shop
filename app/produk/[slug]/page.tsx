@@ -1,41 +1,38 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import { products, fetchSemuaProduk } from '../../../src/data/products'
+import { products, fetchProducts } from '../../../src/data/products'
 import type { Metadata } from 'next'
 
 interface Props {
   params: { slug: string }
 }
 
-// SSG: pre-generate all product pages at build time
 export async function generateStaticParams() {
-  const produkList = await fetchSemuaProduk()
+  const produkList = await fetchProducts()
   return produkList.map((p) => ({ slug: p.slug }))
 }
 
-// Dynamic metadata per product page
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const produk = products.find((p) => p.slug === params.slug)
   if (!produk) return {}
 
+  const chipFormatted = produk.chip_amount >= 1000000
+    ? `${(produk.chip_amount / 1000000).toFixed(0)} Juta`
+    : `${(produk.chip_amount / 1000).toFixed(0)} Ribu`
+
   return {
-    title: `Top Up ${produk.name} Murah & Instan | Koin Shop`,
-    description: `Top up ${produk.name} murah, cepat dan terpercaya di Koin Shop. ${produk.description} Mulai dari Rp ${produk.price.toLocaleString('id-ID')}. Proses otomatis 24 jam tanpa ribet.`,
-    alternates: {
-      canonical: `https://koinshop.id/produk/${produk.slug}`,
-    },
+    title: `Beli Chip Royal Dream ${chipFormatted} Murah | Koin Shop`,
+    description: `Beli chip Royal Dream ${chipFormatted} mulai Rp ${produk.price.toLocaleString('id-ID')}. Harga terbaik, proses otomatis instan 24 jam. Hemat hingga ${Math.round(((produk.gimmick_price - produk.price) / produk.gimmick_price) * 100)}%.`,
+    alternates: { canonical: `https://koinshop.id/produk/${produk.slug}` },
     openGraph: {
-      title: `Top Up ${produk.name} Murah | Koin Shop`,
-      description: `Top up ${produk.name} instan di koinshop.id. Proses cepat, harga terjangkau.`,
+      title: `Chip Royal Dream ${chipFormatted} | Koin Shop`,
+      description: `Harga chip Royal Dream ${chipFormatted} termurah hanya di koinshop.id. Instan & terpercaya.`,
       url: `https://koinshop.id/produk/${produk.slug}`,
       siteName: 'Koin Shop',
       locale: 'id_ID',
       type: 'website',
     },
-    robots: {
-      index: true,
-      follow: true,
-    },
+    robots: { index: true, follow: true },
   }
 }
 
@@ -43,79 +40,59 @@ export default function ProductPage({ params }: Props) {
   const produk = products.find((p) => p.slug === params.slug)
   if (!produk) notFound()
 
-  // JSON-LD structured data
+  const chipFormatted = produk.chip_amount >= 1000000
+    ? `${(produk.chip_amount / 1000000).toFixed(0)} Juta`
+    : `${(produk.chip_amount / 1000).toFixed(0)} Ribu`
+
+  const discountPct = Math.round(
+    ((produk.gimmick_price - produk.price) / produk.gimmick_price) * 100
+  )
+
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Product',
-    name: `Top Up ${produk.name}`,
-    description: produk.description,
-    brand: { '@type': 'Brand', name: 'Koin Shop' },
+    name: `Chip Royal Dream ${chipFormatted}`,
+    description: `Chip Royal Dream ${chipFormatted} untuk game Royal Dream. Proses otomatis instan.`,
+    brand: { '@type': 'Brand', name: 'Royal Dream' },
     offers: {
       '@type': 'Offer',
       priceCurrency: 'IDR',
       price: produk.price,
+      priceValidUntil: '2026-12-31',
       availability: 'https://schema.org/InStock',
       url: `https://koinshop.id/produk/${produk.slug}`,
     },
   }
 
-  const FAQ_SCHEMA = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: `Berapa lama proses top up ${produk.name}?`,
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: `Proses top up ${produk.name} di Koin Shop berjalan otomatis dan biasanya selesai dalam 1-5 menit. Tersedia 24 jam sehari, 7 hari seminggu.`,
-        },
-      },
-      {
-        '@type': 'Question',
-        name: `Metode pembayaran apa saja yang tersedia untuk top up ${produk.name}?`,
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'Kami menerima berbagai metode pembayaran: Transfer Bank (BCA, Mandiri, BNI, BRI), dompet digital (GoPay, OVO, DANA, ShopeePay), dan gerai minimarket (Alfamart, Indomaret).',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: `Apakah top up ${produk.name} di Koin Shop aman?`,
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: `Ya, Koin Shop adalah platform top up game resmi dan terpercaya. Telah melayani ribuan pelanggan dengan rating kepuasan tinggi. Transaksi dijamin aman dan terenkripsi.`,
-        },
-      },
-    ],
-  }
-
   const faqs = [
     {
-      q: `Berapa lama proses top up ${produk.name}?`,
-      a: `Proses top up ${produk.name} di Koin Shop berjalan otomatis dan biasanya selesai dalam 1-5 menit. Tersedia 24 jam sehari, 7 hari seminggu.`,
+      q: `Berapa lama proses top up chip Royal Dream ${chipFormatted}?`,
+      a: 'Proses top up berjalan otomatis dan selesai dalam 1–5 menit. Tersedia 24 jam, 7 hari seminggu.',
     },
     {
-      q: `Metode pembayaran apa saja yang tersedia untuk top up ${produk.name}?`,
-      a: 'Kami menerima berbagai metode pembayaran: Transfer Bank (BCA, Mandiri, BNI, BRI), dompet digital (GoPay, OVO, DANA, ShopeePay), dan gerai minimarket (Alfamart, Indomaret).',
+      q: 'Metode pembayaran apa saja yang tersedia?',
+      a: 'Transfer Bank (BCA, Mandiri, BNI, BRI), dompet digital (GoPay, OVO, DANA, ShopeePay), dan minimarket (Alfamart, Indomaret).',
     },
     {
-      q: `Apakah top up ${produk.name} di Koin Shop aman?`,
-      a: `Ya, Koin Shop adalah platform top up game resmi dan terpercaya. Telah melayani ribuan pelanggan dengan rating kepuasan tinggi. Transaksi dijamin aman dan terenkripsi.`,
+      q: 'Apakah transaksi di Koin Shop aman?',
+      a: 'Ya, Koin Shop telah melayani 10.000+ pelanggan. Transaksi terenkripsi penuh dan dijamin aman.',
     },
   ]
 
+  const faqSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  }
+
   return (
     <>
-      {/* JSON-LD Structured Data */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(FAQ_SCHEMA) }}
-      />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
       <main className="min-h-screen bg-[#0b1120] text-white">
         <div className="max-w-4xl mx-auto px-4 py-10">
@@ -131,39 +108,42 @@ export default function ProductPage({ params }: Props) {
             </ol>
           </nav>
 
-          {/* Hero / Product Header */}
+          {/* Product Header */}
           <section className="mb-10">
+            <div className="flex items-center gap-2 mb-3">
+              <span className="rounded-full bg-[#2563eb]/20 border border-[#2563eb]/40 px-2.5 py-0.5 text-xs font-bold text-blue-400 uppercase tracking-widest">
+                -{discountPct}% Hemat
+              </span>
+            </div>
             <h1 className="text-3xl md:text-4xl font-bold mb-4">
-              Top Up <span className="text-blue-400">{produk.name}</span> Murah & Instan
+              Chip Royal Dream <span className="text-[#F6C90E]">{chipFormatted}</span>
             </h1>
-            <p className="text-gray-300 text-lg leading-relaxed">
-              Dapatkan {produk.name} dengan harga terjangkau mulai dari{' '}
-              <strong className="text-white">Rp {produk.price.toLocaleString('id-ID')}</strong> di Koin Shop.
-              {' '}{produk.description} Proses pembelian dilakukan secara otomatis sehingga{' '}
-              item langsung masuk ke akun kamu dalam hitungan menit tanpa harus menunggu lama
-              atau menghubungi admin. Koin Shop hadir untuk memastikan pengalaman top up game
-              kamu lebih mudah, lebih cepat, dan lebih hemat. Semua transaksi diproses secara
-              aman dengan enkripsi data penuh. Tersedia pilihan paket lengkap dari nominal
-              kecil hingga besar untuk menyesuaikan kebutuhan gaming kamu setiap saat.
-              Layanan tersedia selama 24 jam penuh, 7 hari seminggu, termasuk hari libur
-              nasional. Tidak perlu khawatir kehabisan stok karena Koin Shop selalu menjaga
-              ketersediaan item untuk kenyamanan pelanggan setia kami.
+            <div className="flex items-baseline gap-3 mb-4">
+              <span className="text-2xl font-extrabold text-white">
+                Rp {produk.price.toLocaleString('id-ID')}
+              </span>
+              <span className="text-base text-gray-500 line-through">
+                Rp {produk.gimmick_price.toLocaleString('id-ID')}
+              </span>
+            </div>
+            <p className="text-gray-300 text-base leading-relaxed max-w-2xl">
+              Dapatkan {produk.chip_amount.toLocaleString('id-ID')} chip Royal Dream dengan harga terjangkau di Koin Shop.
+              Proses pembelian dilakukan secara otomatis sehingga chip langsung masuk ke akun kamu
+              dalam hitungan menit. Layanan tersedia 24 jam penuh, 7 hari seminggu.
             </p>
           </section>
 
           {/* Cara Top Up */}
           <section className="mb-10">
             <h2 className="text-2xl font-semibold mb-4 text-blue-300">
-              Cara Top Up {produk.name} di Koin Shop
+              Cara Beli Chip Royal Dream {chipFormatted}
             </h2>
             <ol className="list-decimal list-inside space-y-3 text-gray-300">
-              <li>Kunjungi halaman produk <strong className="text-white">{produk.name}</strong> di koinshop.id.</li>
-              <li>Masukkan <strong className="text-white">ID Game</strong> atau nomor akun kamu dengan benar.</li>
-              <li>Pilih nominal atau paket yang sesuai dengan kebutuhan kamu.</li>
-              <li>Pilih metode pembayaran yang tersedia (Bank Transfer, GoPay, OVO, dll).</li>
-              <li>Lakukan pembayaran sesuai instruksi yang muncul di layar.</li>
-              <li>Konfirmasi pembayaran dan tunggu proses otomatis berjalan.</li>
-              <li>Item akan langsung masuk ke akun game kamu dalam 1–5 menit.</li>
+              <li>Kunjungi halaman produk <strong className="text-white">Koin Shop</strong> dan pilih paket chip.</li>
+              <li>Masukkan <strong className="text-white">Player ID</strong> akun Royal Dream kamu dengan benar.</li>
+              <li>Pilih metode pembayaran yang tersedia.</li>
+              <li>Lakukan pembayaran sesuai instruksi yang muncul.</li>
+              <li>Chip langsung masuk ke akun kamu dalam 1–5 menit.</li>
             </ol>
           </section>
 
@@ -183,12 +163,17 @@ export default function ProductPage({ params }: Props) {
           </section>
 
           {/* CTA */}
-          <div className="text-center mt-8">
-            <Link
-              href="/"
-              className="inline-block bg-blue-600 hover:bg-blue-500 transition-colors text-white font-semibold px-8 py-3 rounded-xl"
+          <div className="text-center mt-8 flex flex-col items-center gap-3">
+            <a
+              href="https://royalurban.net"
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 rounded-full bg-[#F6C90E] px-8 py-3 text-sm font-bold uppercase tracking-widest text-[#0a1628] shadow-[0_0_25px_rgba(246,201,14,0.3)] transition hover:-translate-y-0.5 hover:shadow-[0_0_40px_rgba(246,201,14,0.45)]"
             >
               Beli Sekarang →
+            </a>
+            <Link href="/produk" className="text-sm text-gray-500 hover:text-blue-400 transition-colors">
+              ← Kembali ke katalog produk
             </Link>
           </div>
         </div>

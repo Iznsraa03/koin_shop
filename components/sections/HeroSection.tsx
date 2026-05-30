@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect } from "react";
 import SplitText from "../SplitText";
 
@@ -60,6 +61,13 @@ const HeroSection = ({ slides, activeSlide, onSlideChange }: HeroSectionProps) =
             >
               Top Up Royal Dream Sekarang
             </a>
+            <Link
+              href="/produk"
+              className="inline-flex items-center justify-center rounded-full border border-[#2563eb] bg-transparent px-7 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-[#60a5fa] shadow-[0_0_20px_rgba(37,99,235,0.15)] transition hover:-translate-y-0.5 hover:bg-[#2563eb]/10 hover:shadow-[0_0_35px_rgba(37,99,235,0.3)]"
+              aria-label="Lihat Semua Produk Koin Shop"
+            >
+              Lihat Semua Produk
+            </Link>
             <div className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10">
               <span className="flex h-2 w-2 rounded-full bg-green-500 animate-pulse" />
               <span className="text-xs font-medium text-white/80 tracking-wide">
