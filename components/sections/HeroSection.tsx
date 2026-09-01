@@ -1,6 +1,8 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import SplitText from "../SplitText";
 
 interface HeroSlide {
@@ -17,6 +19,15 @@ interface HeroSectionProps {
 }
 
 const HeroSection = ({ slides, activeSlide, onSlideChange }: HeroSectionProps) => {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile(); // Check on mount
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   if (!slides.length) return null;
 
   // Preload next slide image to reduce delay on transition
@@ -52,21 +63,12 @@ const HeroSection = ({ slides, activeSlide, onSlideChange }: HeroSectionProps) =
             Nikmati layanan top up koin Royal Dream dengan proses instan, harga terbaik, dan pembayaran lengkap hanya di Koin Shop.
           </p>
           <div className="js-hero-reveal flex flex-col items-center gap-4 pt-4 lg:items-start">
-            <a
-              href="https://royalurban.net"
-              className="inline-flex items-center justify-center rounded-full border border-[#F6C90E] bg-[#F6C90E] px-7 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-base-color shadow-[0_0_30px_rgba(246,201,14,0.25)] transition hover:-translate-y-0.5 hover:shadow-[0_0_45px_rgba(37,99,235,0.35)]"
-              aria-label="Top Up Royal Dream Sekarang"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Top Up Royal Dream Sekarang
-            </a>
             <Link
-              href="/produk"
-              className="inline-flex items-center justify-center rounded-full border border-[#2563eb] bg-transparent px-7 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-[#60a5fa] shadow-[0_0_20px_rgba(37,99,235,0.15)] transition hover:-translate-y-0.5 hover:bg-[#2563eb]/10 hover:shadow-[0_0_35px_rgba(37,99,235,0.3)]"
-              aria-label="Lihat Semua Produk Koin Shop"
+              href="/store"
+              className="inline-flex items-center justify-center rounded-full border border-[#F6C90E] bg-[#F6C90E] px-7 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-base-color shadow-[0_0_30px_rgba(246,201,14,0.25)] transition hover:-translate-y-0.5 hover:shadow-[0_0_45px_rgba(37,99,235,0.35)]"
+              aria-label="Pilih Store Koin Shop"
             >
-              Lihat Semua Produk
+              Pilih Store & Mulai Top Up
             </Link>
             <div className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10">
               <span className="flex h-2 w-2 rounded-full bg-green-500 animate-pulse" />
@@ -86,13 +88,10 @@ const HeroSection = ({ slides, activeSlide, onSlideChange }: HeroSectionProps) =
               const isActive = index === activeSlide;
               const isFirst = index === 0;
               // Tentukan src yang tepat: mobile versi untuk <768px, desktop untuk yang lain
-              // Karena ini server component (SSR), kita pakai src desktop secara default
-              // dan biarkan browser memilih via sizes + srcset yang dihasilkan Next.js
+              // Menggunakan state isMobile yang diset di useEffect untuk menghindari Hydration Error
               const mobileSrc = slide.image.replace('.webp', '_mobile.webp');
               // Compute final src sebelum JSX untuk menghindari duplicate prop
-              const resolvedSrc = typeof window !== 'undefined' && window.innerWidth < 768
-                ? mobileSrc
-                : slide.image;
+              const resolvedSrc = isMobile ? mobileSrc : slide.image;
               return (
                 <Image
                   key={slide.image}

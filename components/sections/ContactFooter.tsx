@@ -56,7 +56,7 @@ const ContactFooter = () => {
           <div className="flex flex-col gap-3">
             <p className="text-xs font-semibold uppercase tracking-widest text-[#F6C90E]">Navigasi</p>
             <div className="flex flex-col gap-2">
-              <a href="/produk" className="text-sm text-white/60 transition hover:text-[#F6C90E] w-fit">Top Up Royal Dream - Semua Paket</a>
+              <a href="/store" className="text-sm text-white/60 transition hover:text-[#F6C90E] w-fit">Top Up Royal Dream - Store</a>
               <a href="/sitemap.xml" className="text-sm text-white/60 transition hover:text-[#F6C90E] w-fit">Sitemap</a>
             </div>
             <p className="mt-2 text-xs leading-relaxed text-white/60">
