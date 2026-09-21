@@ -17,11 +17,11 @@ export interface HeroSlide {
 }
 
 const navItems = [
-  { label: "Home", href: "#home" },
+  { label: "Beranda", href: "#home" },
+  { label: "Cara Top Up", href: "#how-it-works" },
+  { label: "Keunggulan", href: "#features" },
+  { label: "FAQ", href: "#faq" },
   { label: "Store", href: "/store" },
-  { label: "Features", href: "#features" },
-  { label: "About", href: "#about" },
-  { label: "Contact", href: "#contact" },
 ] as const;
 
 // Daftarkan GSAP plugin sekali di module level — aman karena GSAP idempotent
@@ -37,10 +37,10 @@ export default function HomePageClient({ slides }: HomePageClientProps) {
   const [activeHref, setActiveHref] = useState("#home");
   const [progressByHref, setProgressByHref] = useState<Record<string, number>>({
     "#home": 0,
-    "/store": 0,
+    "#how-it-works": 0,
     "#features": 0,
-    "#about": 0,
-    "#contact": 0,
+    "#faq": 0,
+    "/store": 0,
   });
 
   // Ref untuk throttle RAF agar scroll listener tidak berlebihan

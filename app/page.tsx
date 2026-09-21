@@ -47,6 +47,9 @@ import AboutSection from "../components/sections/AboutSection";
 import SEOContentSection from "../components/sections/SEOContentSection";
 import FAQSection from "../components/sections/FAQSection";
 import ContactFooter from "../components/sections/ContactFooter";
+import TrustPaymentSection from "../components/sections/TrustPaymentSection";
+import PopularProductsSection from "../components/sections/PopularProductsSection";
+import HowItWorksSection from "../components/sections/HowItWorksSection";
 
 export default async function Home() {
   const carouselDir = path.join(process.cwd(), "public", "carousel");
@@ -79,11 +82,14 @@ export default async function Home() {
   return (
     <main className="min-h-screen bg-base-color text-white">
       <HomePageClient slides={slides.length ? slides : []} />
+      <TrustPaymentSection />
+      <PopularProductsSection />
+      <HowItWorksSection />
       <FeaturesSection />
       <TestimoniSection />
-      <AboutSection />
       <SEOContentSection />
       <FAQSection />
+      <AboutSection />
       <ContactFooter />
     </main>
   );
