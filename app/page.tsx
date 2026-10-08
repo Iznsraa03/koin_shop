@@ -26,9 +26,9 @@ export const dynamic = "force-static";
 export const revalidate = 86400; // Cache selama 1 hari (revalidate background)
 
 const ACCENTS = [
-  "from-[#ffdf8a]/20 via-[#0d111b] to-[#090b12]",
-  "from-[#F6C90E]/20 via-[#131827] to-[#090b12]",
-  "from-[#d99b2b]/20 via-[#171d2d] to-[#090b12]",
+  "from-[#ffdf8a]/20 via-[#0d111b] to-[#0f172b]",
+  "from-[#F6C90E]/20 via-[#131827] to-[#0f172b]",
+  "from-[#d99b2b]/20 via-[#171d2d] to-[#0f172b]",
 ] as const;
 
 function titleFromFilename(filename: string) {

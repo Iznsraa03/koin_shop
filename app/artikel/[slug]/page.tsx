@@ -121,7 +121,7 @@ export default async function DynamicArticlePage({ params }: { params: Promise<{
         baseColor="#090B12"
         pillColor="#F6C90E"
         hoveredPillTextColor="#ffffff"
-        pillTextColor="#090b12"
+        pillTextColor="#0f172b"
         initialLoadAnimation={false}
       />
 

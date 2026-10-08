@@ -56,7 +56,7 @@ export default function ArticleSidebar({ article, siteUrl, relatedArticles = [] 
       </div>
 
       {/* Kategori Blog */}
-      <div className="flex flex-col bg-[#090b12] rounded-3xl p-8 border border-white/5">
+      <div className="flex flex-col bg-base-color rounded-3xl p-8 border border-white/5">
         <h4 className="text-[12px] font-black uppercase tracking-[0.2em] text-[#F6C90E]/80 mb-6 font-['Space_Grotesk']">Kategori Blog</h4>
         <div className="flex flex-col">
           {categories.map((cat, i) => (
@@ -70,7 +70,7 @@ export default function ArticleSidebar({ article, siteUrl, relatedArticles = [] 
 
       {/* Artikel Terkait */}
       {relatedArticles.length > 0 && (
-        <div className="flex flex-col bg-[#090b12] rounded-3xl p-8 border border-white/5">
+        <div className="flex flex-col bg-base-color rounded-3xl p-8 border border-white/5">
           <h4 className="text-[12px] font-black uppercase tracking-[0.2em] text-[#F6C90E]/80 mb-8 font-['Space_Grotesk']">Artikel Terkait</h4>
           <div className="flex flex-col gap-8">
             {relatedArticles.map((rel, i) => (

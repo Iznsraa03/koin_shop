@@ -216,7 +216,7 @@ export default function HomePageClient({ slides }: HomePageClientProps) {
           progressByHref={progressByHref}
           className=""
           ease="power2.easeOut"
-          baseColor="#090b12"
+          baseColor="#0f172b"
           pillColor="#F6C90E"
           hoveredPillTextColor="#ffffff"
           pillTextColor="#0f172b"

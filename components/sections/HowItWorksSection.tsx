@@ -27,7 +27,7 @@ const steps = [
 
 export default function HowItWorksSection() {
   return (
-    <section id="how-it-works" className="js-section relative bg-[#090b12] px-6 py-24 border-t border-white/5">
+    <section id="how-it-works" className="js-section relative bg-transparent px-6 py-24 border-t border-white/5">
       {/* Background glow subtle */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-full bg-[#F6C90E]/5 blur-[120px] rounded-full pointer-events-none opacity-50" />
       

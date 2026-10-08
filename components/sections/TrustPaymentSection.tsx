@@ -44,8 +44,8 @@ export default function TrustPaymentSection() {
 
           {/* Marquee */}
           <AnimatedContent distance={30} delay={0.2} className="relative overflow-hidden w-full flex items-center">
-            <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-[#090b12] to-transparent z-10" />
-            <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-[#090b12] to-transparent z-10" />
+            <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-base-color to-transparent z-10" />
+            <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-base-color to-transparent z-10" />
             
             <div className="flex whitespace-nowrap overflow-hidden py-2" style={{ maskImage: 'linear-gradient(to right, transparent, black 10%, black 90%, transparent)' }}>
               <div className="animate-marquee flex gap-12 items-center w-max">
