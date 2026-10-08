@@ -186,7 +186,7 @@ export default function RootLayout({
   };
 
   return (
-    <html lang="id">
+    <html lang="id" className="dark bg-base-color">
       <head>
         {/* Google tag (gtag.js) */}
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-94YT645GXN"></script>
