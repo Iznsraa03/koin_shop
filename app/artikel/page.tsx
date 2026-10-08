@@ -21,7 +21,7 @@ export default async function ArtikelIndexPage() {
   ] as const;
 
   return (
-    <main className="min-h-screen bg-[#0f172b] text-white">
+    <main className="min-h-screen bg-[#0f172b] text-white flex flex-col">
       <PillNav
         logo="/logo.png"
         logoAlt="Koin Shop logo"
@@ -37,7 +37,7 @@ export default async function ArtikelIndexPage() {
         initialLoadAnimation={false}
       />
 
-      <section className="mx-auto max-w-6xl px-6 pt-32 pb-20">
+      <section className="mx-auto max-w-6xl px-6 pt-32 pb-20 flex-1 w-full">
         <header className="mb-12 text-center">
           <h1 className="text-4xl md:text-5xl font-bold text-[#F6C90E] mb-4">
             Artikel & Tips Gaming
