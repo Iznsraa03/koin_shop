@@ -66,7 +66,7 @@ const HeroSection = ({ slides, activeSlide, onSlideChange }: HeroSectionProps) =
           <div className="js-hero-reveal pt-2 flex justify-center lg:justify-start">
             <Link
               href="/store"
-              className="inline-flex items-center justify-center rounded-full border border-[#F6C90E] bg-[#F6C90E] px-8 py-3 text-sm font-bold uppercase tracking-[0.1em] text-base-color shadow-[0_0_30px_rgba(246,201,14,0.25)] transition hover:-translate-y-0.5 hover:shadow-[0_0_45px_rgba(37,99,235,0.35)]"
+              className="inline-flex items-center justify-center rounded-full border border-[#F6C90E] bg-[#F6C90E] px-8 py-3 text-sm font-bold uppercase tracking-[0.1em] text-base-color shadow-[0_0_30px_rgba(246,201,14,0.25)] transition hover:-translate-y-0.5 hover:shadow-[0_0_45px_rgba(246,201,14,0.35)]"
               aria-label="Pilih Store Koin Shop"
             >
               Mulai Top Up Sekarang
@@ -76,7 +76,7 @@ const HeroSection = ({ slides, activeSlide, onSlideChange }: HeroSectionProps) =
 
         <div className="mx-auto flex w-full max-w-xl flex-col items-center gap-4 lg:items-end">
           <div
-            className={`relative w-full aspect-[3/2] overflow-hidden rounded-2xl border border-[#2563eb]/40 bg-linear-to-br ${slides[activeSlide].accent
+            className={`relative w-full aspect-[3/2] overflow-hidden rounded-2xl border border-[#F6C90E]/30 bg-linear-to-br ${slides[activeSlide].accent
               } p-2`}
           >
             {slides.map((slide, index) => {

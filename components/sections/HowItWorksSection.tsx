@@ -27,7 +27,7 @@ const steps = [
 
 export default function HowItWorksSection() {
   return (
-    <section id="how-it-works" className="js-section relative bg-[#0f172b] px-6 py-24 border-t border-white/5">
+    <section id="how-it-works" className="js-section relative bg-[#090b12] px-6 py-24 border-t border-white/5">
       {/* Background glow subtle */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-full bg-[#F6C90E]/5 blur-[120px] rounded-full pointer-events-none opacity-50" />
       
@@ -57,7 +57,7 @@ export default function HowItWorksSection() {
               )}
               
               <div className="flex flex-col items-center text-center gap-5">
-                <div className="relative flex h-16 w-16 items-center justify-center rounded-full bg-[#111c33] border border-[#F6C90E]/30 shadow-[0_0_20px_rgba(246,201,14,0.1)] transition-all group-hover:scale-110 group-hover:border-[#F6C90E] group-hover:shadow-[0_0_30px_rgba(246,201,14,0.25)]">
+                <div className="relative flex h-16 w-16 items-center justify-center rounded-full bg-[#131827] border border-[#F6C90E]/30 shadow-[0_0_20px_rgba(246,201,14,0.1)] transition-all group-hover:scale-110 group-hover:border-[#F6C90E] group-hover:shadow-[0_0_30px_rgba(246,201,14,0.25)]">
                   <div className="absolute inset-2 rounded-full border border-dashed border-[#F6C90E]/20 animate-spin-slow" style={{ animationDuration: '8s' }} />
                   <span className="text-xl font-black text-[#F6C90E]">{step.num}</span>
                 </div>

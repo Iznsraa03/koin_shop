@@ -8,6 +8,8 @@ export const metadata = {
   description: 'Baca artikel terbaru seputar tips top up game, panduan Mobile Legends, Royal Dream, dan berita esport terkini.',
 };
 
+export const dynamic = 'force-dynamic';
+
 export default async function ArtikelIndexPage() {
   const articles = await getArticles('published');
 

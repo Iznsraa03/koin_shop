@@ -50,8 +50,8 @@ const FeaturesSection = () => {
               threshold={0.1}
               delay={index * 0.08}
             >
-              <div className="rounded-2xl border border-[#F6C90E]/70 bg-[#111c33] p-6 shadow-[0_0_35px_rgba(246,201,14,0.18)]">
-                <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full border border-[#F6C90E]/50 bg-[#162344]">
+              <div className="rounded-2xl border border-[#F6C90E]/70 bg-[#131827] p-6 shadow-[0_0_35px_rgba(246,201,14,0.18)]">
+                <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full border border-[#F6C90E]/50 bg-[#171d2d]">
                   <span
                     aria-hidden="true"
                     className="h-6 w-6 bg-linear-to-br from-[#F6C90E] via-[#FBE36A] to-white drop-shadow-[0_0_18px_rgba(246,201,14,0.28)]"

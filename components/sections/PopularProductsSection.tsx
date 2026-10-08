@@ -43,10 +43,10 @@ export default function PopularProductsSection() {
               key={product.id}
               distance={40}
               delay={0.1 * index}
-              className="group relative flex flex-col overflow-hidden rounded-2xl border border-white/10 bg-[#111c33]/80 p-6 transition-all hover:border-[#F6C90E]/50 hover:shadow-[0_10px_40px_-10px_rgba(246,201,14,0.15)]"
+              className="group relative flex flex-col overflow-hidden rounded-2xl border border-white/10 bg-[#131827] p-6 transition-all hover:border-[#F6C90E]/50 hover:shadow-[0_10px_40px_-10px_rgba(246,201,14,0.15)]"
             >
               {product.badge && (
-                <div className="absolute top-4 right-4 z-10 rounded-full bg-gradient-to-r from-[#F6C90E] to-[#FBE36A] px-3 py-1 text-[10px] font-black uppercase tracking-wider text-[#0f172b]">
+                <div className="absolute top-4 right-4 z-10 rounded-full bg-gradient-to-r from-[#F6C90E] to-[#FBE36A] px-3 py-1 text-[10px] font-black uppercase tracking-wider text-[#090b12]">
                   {product.badge}
                 </div>
               )}
@@ -72,7 +72,7 @@ export default function PopularProductsSection() {
                 
                 <Link
                   href="/store"
-                  className="mt-4 flex w-full items-center justify-center rounded-xl bg-white/5 py-3 text-sm font-bold text-white transition-all group-hover:bg-[#F6C90E] group-hover:text-[#0f172b]"
+                  className="mt-4 flex w-full items-center justify-center rounded-xl bg-white/5 py-3 text-sm font-bold text-white transition-all group-hover:bg-[#F6C90E] group-hover:text-[#090b12]"
                 >
                   Beli di Toko
                 </Link>

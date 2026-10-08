@@ -2,9 +2,17 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import PillNav from '@/components/PillNav';
 import ContactFooter from '@/components/sections/ContactFooter';
-import { getArticleBySlug } from '@/app/actions/articles';
+import { getArticleBySlug, getArticles } from '@/app/actions/articles';
+import { getCommentsByArticleId } from '@/app/actions/comments';
+import ArticleSidebar from '@/components/article/ArticleSidebar';
+import ArticleFaqAccordion from '@/components/article/ArticleFaqAccordion';
+import ArticleShareButtons from '@/components/article/ArticleShareButtons';
+import ArticleComments from '@/components/article/ArticleComments';
+import TableOfContents from '@/components/article/TableOfContents';
 
 // Ponytail: Simple Server Component fetching data and rendering natively. No extra state needed.
+
+export const dynamic = 'force-dynamic';
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
@@ -50,11 +58,22 @@ export default async function DynamicArticlePage({ params }: { params: Promise<{
     notFound();
   }
 
+  // Fetch related articles (for simplicity, we just fetch latest published and exclude current)
+  const allArticles = await getArticles('published');
+  const relatedArticles = allArticles.filter(a => a.id !== article.id).slice(0, 3);
+
+  // Fetch comments
+  const initialComments = await getCommentsByArticleId(article.id);
+
+  const siteUrl = 'https://koinshop.id';
+  const currentUrl = `${siteUrl}/artikel/${slug}`;
+
   const navItems = [
     { label: "Home", href: "/" },
-    { label: "Features", href: "/#features" },
-    { label: "About", href: "/#about" },
-    { label: "Contact", href: "/#contact" },
+    { label: "Top Up", href: "/#store" },
+    { label: "Cek Pesanan", href: "/cek-pesanan" },
+    { label: "Panduan", href: "/artikel" },
+    { label: "Tentang Kami", href: "/#about" },
   ] as const;
 
   // Build JSON-LD Schema
@@ -86,7 +105,7 @@ export default async function DynamicArticlePage({ params }: { params: Promise<{
   } : null;
 
   return (
-    <main className="min-h-screen bg-[#0f172b] text-white">
+    <main className="min-h-screen bg-base-color text-white">
       {/* Inject Structured Data */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaMarkup) }} />
       {faqSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />}
@@ -99,102 +118,158 @@ export default async function DynamicArticlePage({ params }: { params: Promise<{
         progressByHref={{}}
         className=""
         ease="power2.easeOut"
-        baseColor="#0f172b"
+        baseColor="#090B12"
         pillColor="#F6C90E"
         hoveredPillTextColor="#ffffff"
-        pillTextColor="#0f172b"
+        pillTextColor="#090b12"
         initialLoadAnimation={false}
       />
 
-      <article className="mx-auto max-w-4xl px-6 pt-32 pb-20">
+      <div className="mx-auto max-w-6xl px-6 pt-32 pb-20">
         
-        {/* Header */}
-        <header className="mb-10 text-center">
-          {article.category && (
-            <span className="inline-block px-3 py-1 bg-white/10 text-[#F6C90E] rounded-full text-sm font-semibold mb-4 border border-white/20">
-              {article.category}
-            </span>
-          )}
-          <h1 className="text-4xl md:text-5xl font-bold text-[#F6C90E] mb-6 leading-tight">
+        {/* Breadcrumbs */}
+        <div className="mb-6 text-sm font-semibold text-white/40 flex items-center gap-2">
+          <a href="/" className="hover:text-[#F6C90E] transition-colors">Home</a>
+          <span>/</span>
+          <a href="/artikel" className="hover:text-[#F6C90E] transition-colors">Blog</a>
+          <span>/</span>
+          <span className="text-white/80 line-clamp-1">{article.title}</span>
+        </div>
+
+        {/* Hero / Header */}
+        <header className="mb-12 border-b border-white/5 pb-10">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-[#F6C90E] mb-6 leading-tight max-w-4xl">
             {article.title}
           </h1>
-          <div className="flex items-center justify-center gap-4 text-white/60 text-sm">
-            <span>Oleh: {article.author_name}</span>
-            <span>•</span>
-            <time dateTime={article.published_at}>{new Date(article.published_at).toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' })}</time>
+          <p className="text-xl text-white/60 mb-8 max-w-3xl leading-relaxed">
+            {article.excerpt}
+          </p>
+          
+          <div className="flex flex-wrap items-center gap-6 text-white/50 text-sm">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-full bg-[#131827] flex items-center justify-center font-bold text-[#F6C90E] border border-[#F6C90E]/20">
+                {article.author_name ? article.author_name.charAt(0).toUpperCase() : 'K'}
+              </div>
+              <div className="flex flex-col">
+                <span className="text-white font-bold">{article.author_name}</span>
+                <span className="text-[11px] uppercase tracking-wider text-[#F6C90E]">{article.category}</span>
+              </div>
+            </div>
+            <div className="h-6 w-[1px] bg-white/10 hidden sm:block"></div>
+            <time className="flex items-center gap-2" dateTime={article.published_at}>
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+              {new Date(article.published_at).toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' })}
+            </time>
+            <div className="h-6 w-[1px] bg-white/10 hidden sm:block"></div>
+            <div className="flex items-center gap-2">
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+              5 menit baca
+            </div>
           </div>
         </header>
 
-        {article.featured_image && (
-          <div className="mb-12 rounded-2xl overflow-hidden border border-white/10">
-            <img src={article.featured_image} alt={article.alt_image || article.title} className="w-full object-cover" />
-          </div>
-        )}
-
-        {/* AI Key Takeaways (GEO / AEO Box) */}
-        {(article.main_question || (article.key_takeaways && article.key_takeaways.length > 0)) && (
-          <div className="bg-white/5 border-l-4 border-[#F6C90E] p-6 rounded-r-xl mb-10">
-            {article.main_question && <h3 className="text-xl font-bold mb-2">{article.main_question}</h3>}
-            {article.direct_answer && <p className="text-white/80 mb-4">{article.direct_answer}</p>}
-            {article.key_takeaways && article.key_takeaways.length > 0 && (
-              <>
-                <h4 className="font-semibold text-[#F6C90E] mb-2">Key Takeaways:</h4>
-                <ul className="list-disc pl-5 text-white/80 space-y-1">
-                  {article.key_takeaways.map((point: string, i: number) => (
-                    <li key={i}>{point}</li>
-                  ))}
-                </ul>
-              </>
+        {/* 2-Column Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
+          
+          {/* Main Content (Left Column) */}
+          <div className="lg:col-span-8">
+            
+            {article.featured_image && (
+              <div className="mb-12 rounded-[24px] overflow-hidden border border-white/5 relative group">
+                <div className="absolute inset-0 bg-[#F6C90E]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10 pointer-events-none"></div>
+                <img src={article.featured_image} alt={article.alt_image || article.title} className="w-full object-cover aspect-[21/9] group-hover:scale-105 transition-transform duration-700" />
+              </div>
             )}
+
+            <TableOfContents />
+
+            {/* AI Key Takeaways (GEO / AEO Box) */}
+            {(article.main_question || (article.key_takeaways && article.key_takeaways.length > 0)) && (
+              <div className="bg-[#131827]/50 border-l-[4px] border-[#F6C90E] p-6 md:p-8 rounded-r-[20px] mb-12 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
+                {article.main_question && <h3 className="text-xl md:text-2xl font-bold mb-4">{article.main_question}</h3>}
+                {article.direct_answer && <p className="text-white/70 mb-6 leading-relaxed">{article.direct_answer}</p>}
+                {article.key_takeaways && article.key_takeaways.length > 0 && (
+                  <>
+                    <h4 className="text-xs font-semibold uppercase tracking-[0.2em] text-[#F6C90E]/80 mb-4">Key Takeaways:</h4>
+                    <ul className="space-y-3">
+                      {article.key_takeaways.map((point: string, i: number) => (
+                        <li key={i} className="flex items-start gap-3">
+                           <div className="flex-shrink-0 w-5 h-5 rounded-full bg-[#F6C90E]/20 flex items-center justify-center text-[#F6C90E] font-bold text-[10px] mt-0.5">✓</div>
+                           <span className="text-white/80 leading-relaxed">{point}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </>
+                )}
+              </div>
+            )}
+
+            {/* Main Content */}
+            <div 
+              className="prose prose-invert prose-lg max-w-none 
+                prose-headings:text-white prose-h2:text-3xl prose-h2:font-bold prose-h2:mb-6 prose-h2:mt-12
+                prose-h3:text-2xl prose-h3:font-bold prose-h3:mb-4 prose-h3:mt-8
+                prose-p:text-white/70 prose-p:leading-[1.8] prose-p:mb-6 
+                prose-a:text-[#F6C90E] prose-a:no-underline hover:prose-a:underline 
+                prose-ul:list-none prose-ul:pl-0 prose-li:text-white/70 prose-li:mb-2 
+                prose-ol:list-decimal prose-ol:pl-5 prose-ol:marker:text-[#F6C90E] prose-ol:marker:font-bold
+                prose-strong:text-white prose-blockquote:border-l-[#F6C90E] prose-blockquote:bg-[#131827] prose-blockquote:py-2 prose-blockquote:px-6 prose-blockquote:rounded-r-xl prose-blockquote:not-italic
+                pb-10"
+              dangerouslySetInnerHTML={{ __html: article.content }}
+            />
+
+            {/* Tags Section */}
+            {article.tags && article.tags.length > 0 && (
+              <div className="mt-4 mb-10 flex flex-wrap gap-2">
+                <span className="text-sm font-semibold text-white/30 mr-2 flex items-center uppercase tracking-widest">Tags:</span>
+                {article.tags.map((tag: string, i: number) => (
+                  <span key={i} className="px-4 py-1.5 bg-[#131827] hover:bg-[#171d2d] border border-white/5 hover:border-[#F6C90E]/30 rounded-full text-[13px] text-white/60 hover:text-[#F6C90E] transition-all cursor-default">
+                    #{tag}
+                  </span>
+                ))}
+              </div>
+            )}
+
+            {/* FAQ Section */}
+            {article.faqs && article.faqs.length > 0 && (
+              <div className="mt-14 mb-10 border-t border-white/5 pt-10">
+                <p className="text-xs font-semibold uppercase tracking-[0.5em] text-[#F6C90E]/80 mb-2">FAQ</p>
+                <h2 className="text-2xl md:text-3xl font-bold text-white mb-8">Pertanyaan Umum</h2>
+                <ArticleFaqAccordion faqs={article.faqs} />
+              </div>
+            )}
+
+            <ArticleShareButtons url={currentUrl} title={article.title} />
+
+            {/* Author Bio */}
+            <section className="mt-12 flex flex-col sm:flex-row gap-6 items-start sm:items-center py-8 border-t border-b border-white/5">
+              <div className="shrink-0 w-16 h-16 rounded-full bg-[#131827] border border-white/10 flex items-center justify-center p-2">
+                <img src="/logo.png" alt="Koin Shop Logo" className="w-full h-full object-contain" />
+              </div>
+              <div>
+                <span className="block mb-1 text-[11px] font-bold uppercase tracking-wider text-[#F6C90E]">Tentang Penulis</span>
+                <h3 className="text-xl font-bold text-white mb-2">{article.author_name || 'Tim Koin Shop'}</h3>
+                <p className="text-[14px] text-white/60 leading-relaxed max-w-2xl m-0">
+                  Tim editorial resmi yang menyajikan panduan top up instan, tips keamanan akun, dan pembaruan game terkini agar pengalaman bermain Anda selalu maksimal tanpa kendala.
+                </p>
+              </div>
+            </section>
+
+            {/* Dynamic Comments Section */}
+            <ArticleComments articleId={article.id} slug={article.slug} initialComments={initialComments} />
+
           </div>
-        )}
 
-        {/* Main Content */}
-        {/* Using standard prose tailwind classes matching existing styles */}
-        <div 
-          className="prose prose-invert prose-blue max-w-none prose-headings:text-[#F6C90E] prose-h1:text-3xl prose-h1:font-bold prose-h1:mb-6 prose-p:text-white/80 prose-p:leading-relaxed prose-p:mb-6 prose-a:text-blue-400 prose-a:no-underline hover:prose-a:underline prose-ul:list-disc prose-ul:pl-6 prose-li:text-white/80 prose-li:mb-2 border-b border-white/10 pb-10"
-          dangerouslySetInnerHTML={{ __html: article.content }}
-        />
-
-        {/* FAQ Section */}
-        {article.faqs && article.faqs.length > 0 && (
-          <div className="mt-12">
-            <h2 className="text-2xl font-bold text-[#F6C90E] mb-6">Frequently Asked Questions</h2>
-            <div className="space-y-4">
-              {article.faqs.map((faq: any, i: number) => (
-                <div key={i} className="bg-white/5 border border-white/10 p-5 rounded-xl">
-                  <h3 className="font-bold text-lg mb-2">{faq.question}</h3>
-                  <p className="text-white/70">{faq.answer}</p>
-                </div>
-              ))}
+          {/* Sidebar (Right Column) */}
+          <div className="lg:col-span-4 relative">
+            <div className="sticky top-32">
+              <ArticleSidebar article={article} siteUrl={siteUrl} relatedArticles={relatedArticles} />
             </div>
           </div>
-        )}
 
-        {/* Source References */}
-        {article.source_url && (
-          <div className="mt-8 text-sm text-white/50">
-            Sumber: <a href={article.source_url} target="_blank" rel="nofollow noreferrer" className="hover:text-white transition">{article.source_name || article.source_url}</a>
-          </div>
-        )}
+        </div>
 
-        {/* CTA Section */}
-        {(article.cta_url || article.related_product_id) && (
-          <div className="mt-12 text-center p-8 rounded-2xl bg-white/5 border border-white/10">
-            <h2 className="text-2xl font-bold text-[#F6C90E] mb-4">Siap untuk Menang?</h2>
-            {article.related_product_name && (
-              <p className="text-white/70 mb-4 text-lg">Top Up {article.related_product_name} Termurah & Instan!</p>
-            )}
-            <p className="text-white/70 mb-8">Dapatkan saldo game Anda secara instan dan aman sekarang juga.</p>
-            <a
-              href={article.cta_url || '/'}
-              className="inline-flex items-center justify-center rounded-full border border-[#F6C90E] bg-[#F6C90E] px-8 py-4 text-sm font-semibold uppercase tracking-[0.2em] text-[#0f172b] shadow-[0_0_30px_rgba(246,201,14,0.25)] transition hover:-translate-y-0.5 hover:shadow-[0_0_45px_rgba(246,201,14,0.35)]"
-            >
-              {article.cta_text || 'Top Up Sekarang'}
-            </a>
-          </div>
-        )}
-      </article>
+      </div>
 
       <ContactFooter />
     </main>

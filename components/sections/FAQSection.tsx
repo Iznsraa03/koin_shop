@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import AnimatedContent from "../AnimatedContent";
-import { ChevronDown } from "lucide-react";
 
 interface FAQItem {
   question: string;
@@ -95,41 +94,56 @@ const FAQSection = () => {
           </div>
         </AnimatedContent>
 
-        <div className="divide-y divide-white/10 rounded-2xl border border-white/10 bg-white/[0.03] overflow-hidden">
-          {faqs.map((faq, i) => (
-            <AnimatedContent key={i} distance={20} delay={0.05 * i}>
-              <div>
-                <button
-                  onClick={() => toggle(i)}
-                  className="flex w-full items-center justify-between gap-4 px-6 py-5 text-left transition-colors hover:bg-white/5"
-                  aria-expanded={openIndex === i}
-                  aria-controls={`faq-answer-${i}`}
-                  id={`faq-question-${i}`}
-                >
-                  <span className="text-sm font-medium text-white sm:text-base">
-                    {faq.question}
-                  </span>
-                  <ChevronDown
-                    className={`h-4 w-4 shrink-0 text-[#F6C90E] transition-transform duration-300 ${
-                      openIndex === i ? "rotate-180" : ""
-                    }`}
-                  />
-                </button>
-                <div
-                  id={`faq-answer-${i}`}
-                  role="region"
-                  aria-labelledby={`faq-question-${i}`}
-                  className={`overflow-hidden transition-all duration-300 ease-in-out ${
-                    openIndex === i ? "max-h-48" : "max-h-0"
+        <div className="flex flex-col gap-[14px]">
+          {faqs.map((faq, i) => {
+            const isActive = openIndex === i;
+            return (
+              <AnimatedContent key={i} distance={20} delay={0.05 * i}>
+                <div 
+                  className={`rounded-[18px] border overflow-hidden transition-all duration-300 ease-in-out ${
+                    isActive 
+                      ? 'border-[#F6C90E]/30 bg-[#171d2d] shadow-[0_14px_34px_rgba(0,0,0,0.2)]' 
+                      : 'border-white/[0.08] bg-[#131827] hover:border-white/[0.15]'
                   }`}
                 >
-                  <p className="px-6 pb-5 text-sm leading-relaxed text-white/60">
-                    {faq.answer}
-                  </p>
+                  <button
+                    onClick={() => toggle(i)}
+                    className="w-full flex items-center justify-between p-5 md:p-[24px] bg-transparent border-none text-left cursor-pointer"
+                    aria-expanded={isActive}
+                    aria-controls={`faq-answer-${i}`}
+                    id={`faq-question-${i}`}
+                  >
+                    <span className="text-white text-[15px] md:text-[16px] font-bold leading-snug pr-4">
+                      {faq.question}
+                    </span>
+                    <span 
+                      className={`flex-shrink-0 w-7 h-7 flex items-center justify-center rounded-lg text-[18px] transition-all duration-300 ease-in-out ${
+                        isActive 
+                          ? 'bg-[#F6C90E]/15 text-[#ffdf8a] rotate-45' 
+                          : 'bg-white/5 text-[#ffdf8a]'
+                      }`}
+                    >
+                      +
+                    </span>
+                  </button>
+                  <div
+                    id={`faq-answer-${i}`}
+                    role="region"
+                    aria-labelledby={`faq-question-${i}`}
+                    className={`transition-all duration-300 ease-in-out px-5 md:px-[24px] ${
+                      isActive 
+                        ? 'max-h-[500px] opacity-100 pb-[24px]' 
+                        : 'max-h-0 opacity-0 pb-0 overflow-hidden'
+                    }`}
+                  >
+                    <p className="text-[#aab2c5] text-[14px] leading-[1.7] m-0">
+                      {faq.answer}
+                    </p>
+                  </div>
                 </div>
-              </div>
-            </AnimatedContent>
-          ))}
+              </AnimatedContent>
+            );
+          })}
         </div>
       </div>
     </section>

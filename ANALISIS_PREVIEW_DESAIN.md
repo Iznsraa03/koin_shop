@@ -7,14 +7,14 @@ Dokumen ini berisi analisis terhadap file `preview desain website koin shop.html
 
 ## 2. Perbandingan Tampilan & Struktur (Preview HTML vs Current Project)
 
-| Aspek | Preview HTML (`preview desain website koin shop.html`) | Current Project (Next.js App Router) |
-| :--- | :--- | :--- |
-| **Teknologi Styling** | Menggunakan CSS Native murni dengan CSS Variables (`--bg`, `--yellow`, dll) yang disematkan langsung di dalam tag `<style>`. | Menggunakan **Tailwind CSS** dengan konfigurasi warna custom (`bg-base-color`, dll). |
-| **Header / Navigasi** | Menggunakan navbar standar dengan efek *glassmorphism* (backdrop-filter) ketika di-scroll (`.site-header.scrolled`). | Menggunakan komponen custom interaktif `PillNav` yang dinamis dan terintegrasi dengan animasi **GSAP**. |
-| **Hero Section** | Berupa *grid layout* (teks kiri, gambar/banner statis kanan) dengan *kicker status* dan tombol aksi (CTA). | Menggunakan *Carousel/Slider* dinamis (`HeroSection`) yang membaca aset gambar dari folder public. |
-| **Daftar Produk** | Memiliki struktur `.product-layout` yang rapi (kombinasi grid daftar produk di kiri dan `.store-aside` / sidebar promo di kanan). | Masih dalam tahap pengembangan layout produk (diasumsikan berada di rute `/store` atau menggunakan section terpisah). |
-| **Komponen Tambahan** | Menampilkan *Trust Bar* (statistik kepercayaan), *Timeline Guide* (cara top-up), dan *Payment Marquee* (logo pembayaran berjalan). | Menggunakan komponen terpisah seperti `FeaturesSection`, `TestimoniSection`, `AboutSection`, `FAQSection`. |
-| **Animasi** | Murni menggunakan transisi CSS sederhana (hover efek, sticky navbar). | Menggunakan *ScrollTrigger* (GSAP) dan Framer Motion untuk transisi dan efek *fade-up*/*scale-in*. |
+| Aspek                 | Preview HTML (`preview desain website koin shop.html`)                                                                             | Current Project (Next.js App Router)                                                                                  |
+| :----------------------| :-----------------------------------------------------------------------------------------------------------------------------------| :----------------------------------------------------------------------------------------------------------------------|
+| **Teknologi Styling** | Menggunakan CSS Native murni dengan CSS Variables (`--bg`, `--yellow`, dll) yang disematkan langsung di dalam tag `<style>`.       | Menggunakan **Tailwind CSS** dengan konfigurasi warna custom (`bg-base-color`, dll).                                  |
+| **Header / Navigasi** | Menggunakan navbar standar dengan efek *glassmorphism* (backdrop-filter) ketika di-scroll (`.site-header.scrolled`).               | Menggunakan komponen custom interaktif `PillNav` yang dinamis dan terintegrasi dengan animasi **GSAP**.               |
+| **Hero Section**      | Berupa *grid layout* (teks kiri, gambar/banner statis kanan) dengan *kicker status* dan tombol aksi (CTA).                         | Menggunakan *Carousel/Slider* dinamis (`HeroSection`) yang membaca aset gambar dari folder public.                    |
+| **Daftar Produk**     | Memiliki struktur `.product-layout` yang rapi (kombinasi grid daftar produk di kiri dan `.store-aside` / sidebar promo di kanan).  | Masih dalam tahap pengembangan layout produk (diasumsikan berada di rute `/store` atau menggunakan section terpisah). |
+| **Komponen Tambahan** | Menampilkan *Trust Bar* (statistik kepercayaan), *Timeline Guide* (cara top-up), dan *Payment Marquee* (logo pembayaran berjalan). | Menggunakan komponen terpisah seperti `FeaturesSection`, `TestimoniSection`, `AboutSection`, `FAQSection`.            |
+| **Animasi**           | Murni menggunakan transisi CSS sederhana (hover efek, sticky navbar).                                                              | Menggunakan *ScrollTrigger* (GSAP) dan Framer Motion untuk transisi dan efek *fade-up*/*scale-in*.                    |
 
 **Kesimpulan Perbandingan:** 
 Secara visual, tema *dark premium* dengan aksen kuning (`#ffd21a` vs `#F6C90E`) sangat selaras. Namun, implementasi desain baru ini membutuhkan konversi dari HTML/CSS Native ke struktur komponen React dengan Tailwind CSS jika ingin digabungkan sepenuhnya.
