@@ -21,7 +21,7 @@ export default async function ArtikelIndexPage() {
   ] as const;
 
   return (
-    <main className="min-h-screen bg-[#090b12] text-white flex flex-col">
+    <main className="min-h-screen bg-base-color text-white flex flex-col">
       <PillNav
         logo="/logo.png"
         logoAlt="Koin Shop logo"
@@ -30,10 +30,10 @@ export default async function ArtikelIndexPage() {
         progressByHref={{}}
         className=""
         ease="power2.easeOut"
-        baseColor="#090b12"
+        baseColor="#0f172b"
         pillColor="#F6C90E"
         hoveredPillTextColor="#ffffff"
-        pillTextColor="#090b12"
+        pillTextColor="#0f172b"
         initialLoadAnimation={false}
       />
 
