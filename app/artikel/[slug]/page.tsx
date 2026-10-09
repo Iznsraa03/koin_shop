@@ -82,8 +82,8 @@ export default async function DynamicArticlePage({ params }: { params: Promise<{
     '@type': article.schema_type || 'Article',
     headline: article.seo_title || article.title,
     image: article.featured_image ? [article.featured_image] : [],
-    datePublished: new Date(article.published_at).toISOString(),
-    dateModified: new Date(article.updated_at).toISOString(),
+    datePublished: new Date(article.published_at || article.created_at).toISOString(),
+    dateModified: new Date(article.updated_at || article.created_at).toISOString(),
     author: [{
         '@type': 'Person',
         name: article.author_name || 'Admin',

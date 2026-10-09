@@ -80,7 +80,7 @@ export default async function ArtikelIndexPage() {
                   </p>
                   <div className="flex justify-between items-center text-xs text-white/40 pt-4 border-t border-white/10">
                     <span>{article.author_name}</span>
-                    <span>{new Date(article.published_at).toLocaleDateString('id-ID')}</span>
+                    <span>{new Date(article.published_at || article.created_at).toLocaleDateString('id-ID')}</span>
                   </div>
                 </div>
               </Link>

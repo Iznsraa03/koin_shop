@@ -18,7 +18,8 @@ export async function getArticles(status?: string) {
 }
 
 export async function getArticleBySlug(slug: string) {
-  const { rows } = await query('SELECT * FROM articles WHERE slug = $1 LIMIT 1', [slug]);
+  const decodedSlug = decodeURIComponent(slug);
+  const { rows } = await query('SELECT * FROM articles WHERE slug = $1 LIMIT 1', [decodedSlug]);
   return rows[0] || null;
 }
 
@@ -30,6 +31,23 @@ export async function getArticleById(id: number | string) {
 export async function saveArticle(data: any) {
   // Ponytail approach: manual dynamic query builder for minimum required functionality.
   const isUpdate = !!data.id;
+
+  // Server-side slug sanitization
+  let slug = data.slug || data.title || '';
+  slug = slug
+    .toString()
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/[\s]+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/(^-|-$)/g, '');
+  data.slug = slug;
+
+  // Auto-set published_at when publishing
+  if (data.status === 'published' && !data.published_at) {
+    data.published_at = new Date().toISOString();
+  }
   
   // Fields to save
   const fields = [
@@ -71,6 +89,7 @@ export async function saveArticle(data: any) {
 
   try {
     const { rows } = await query(sql, values);
+    revalidatePath('/admin/artikel');
     revalidatePath('/artikel');
     if (rows[0]?.slug) {
         revalidatePath(`/artikel/${rows[0].slug}`);

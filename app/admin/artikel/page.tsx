@@ -6,6 +6,8 @@ export const metadata = {
   title: 'Manajemen Artikel | Admin Koin Shop',
 };
 
+export const dynamic = 'force-dynamic';
+
 export default async function AdminArtikelPage() {
   const articles = await getArticles();
 
@@ -73,7 +75,7 @@ export default async function AdminArtikelPage() {
                         </span>
                       </td>
                       <td className="p-5 text-white/60">{article.category || '-'}</td>
-                      <td className="p-5 text-white/60">{new Date(article.published_at).toLocaleDateString('id-ID', { year: 'numeric', month: 'short', day: 'numeric' })}</td>
+                      <td className="p-5 text-white/60">{new Date(article.published_at || article.created_at).toLocaleDateString('id-ID', { year: 'numeric', month: 'short', day: 'numeric' })}</td>
                       <td className="p-5 text-right">
                         <div className="flex justify-end gap-3">
                           <Link href={`/admin/artikel/edit/${article.id}`} className="text-blue-400 hover:text-blue-300 transition-colors font-medium">Edit</Link>

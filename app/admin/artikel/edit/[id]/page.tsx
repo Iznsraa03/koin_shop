@@ -7,6 +7,8 @@ export const metadata = {
   title: 'Edit Artikel | Admin Koin Shop',
 };
 
+export const dynamic = 'force-dynamic';
+
 export default async function EditArtikelPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const article = await getArticleById(id);
