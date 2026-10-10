@@ -4,8 +4,9 @@ import ContactFooter from '@/components/sections/ContactFooter';
 import { getArticles } from '@/app/actions/articles';
 
 export const metadata = {
-  title: 'Artikel & Tips Gaming Terbaru | Koin Shop',
+  title: 'Artikel & Tips Gaming Terbaru',
   description: 'Baca artikel terbaru seputar tips top up game, panduan Mobile Legends, Royal Dream, dan berita esport terkini.',
+  alternates: { canonical: 'https://koinshop.id/artikel' },
 };
 
 export const dynamic = 'force-dynamic';

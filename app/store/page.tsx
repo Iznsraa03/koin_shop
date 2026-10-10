@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import StoreCards from "@/components/store/StoreCards";
 
 export const metadata: Metadata = {
-  title: "Pilih Store Top Up | Koin Shop",
+  title: "Pilih Store Top Up",
   description:
     "Pilih platform top up Royal Dream Koin Shop. Tersedia layanan otomatis 24 jam via Royal Urban dan pesanan spesial grosir via Stecu Store WhatsApp.",
   alternates: { canonical: "https://koinshop.id/store" },

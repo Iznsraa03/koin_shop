@@ -22,6 +22,7 @@ const navItems = [
   { label: "Keunggulan", href: "#features" },
   { label: "FAQ", href: "#faq" },
   { label: "Store", href: "/store" },
+  { label: "Artikel", href: "/artikel" },
 ] as const;
 
 // Daftarkan GSAP plugin sekali di module level — aman karena GSAP idempotent

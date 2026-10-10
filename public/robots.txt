@@ -2,6 +2,5 @@ User-agent: *
 Allow: /
 Disallow: /api/
 Disallow: /admin/
-Disallow: /_next/
 
 Sitemap: https://koinshop.id/sitemap.xml

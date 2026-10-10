@@ -4,7 +4,7 @@ import { products } from "@/src/data/products";
 import ProductCard from "@/components/ui/ProductCard";
 
 export const metadata: Metadata = {
-  title: "Produk Chip Royal Dream | Koin Shop",
+  title: "Produk Chip Royal Dream",
   description:
     "Daftar lengkap paket chip Royal Dream murah dan instan. Beli chip Royal Dream 250K hingga 10 Juta dengan harga terbaik hanya di Koin Shop.",
   alternates: { canonical: "https://koinshop.id/produk" },

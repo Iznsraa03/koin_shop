@@ -9,6 +9,7 @@ import ArticleFaqAccordion from '@/components/article/ArticleFaqAccordion';
 import ArticleShareButtons from '@/components/article/ArticleShareButtons';
 import ArticleComments from '@/components/article/ArticleComments';
 import TableOfContents from '@/components/article/TableOfContents';
+import { marked } from 'marked';
 
 // Ponytail: Simple Server Component fetching data and rendering natively. No extra state needed.
 
@@ -68,6 +69,8 @@ export default async function DynamicArticlePage({ params }: { params: Promise<{
   const siteUrl = 'https://koinshop.id';
   const currentUrl = `${siteUrl}/artikel/${slug}`;
 
+  const parsedContent = await marked.parse(article.content || '');
+
   const navItems = [
     { label: "Home", href: "/" },
     { label: "Top Up", href: "/#store" },
@@ -81,7 +84,9 @@ export default async function DynamicArticlePage({ params }: { params: Promise<{
     '@context': 'https://schema.org',
     '@type': article.schema_type || 'Article',
     headline: article.seo_title || article.title,
-    image: article.featured_image ? [article.featured_image] : [],
+    image: article.featured_image 
+      ? [article.featured_image.startsWith('http') ? article.featured_image : `${siteUrl}${article.featured_image}`] 
+      : [],
     datePublished: new Date(article.published_at || article.created_at).toISOString(),
     dateModified: new Date(article.updated_at || article.created_at).toISOString(),
     author: [{
@@ -215,7 +220,7 @@ export default async function DynamicArticlePage({ params }: { params: Promise<{
                 prose-ol:list-decimal prose-ol:pl-5 prose-ol:marker:text-[#F6C90E] prose-ol:marker:font-bold
                 prose-strong:text-white prose-blockquote:border-l-[#F6C90E] prose-blockquote:bg-[#131827] prose-blockquote:py-2 prose-blockquote:px-6 prose-blockquote:rounded-r-xl prose-blockquote:not-italic
                 pb-10"
-              dangerouslySetInnerHTML={{ __html: article.content }}
+              dangerouslySetInnerHTML={{ __html: parsedContent }}
             />
 
             {/* Tags Section */}
